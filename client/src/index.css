@@ -15,14 +15,18 @@
   --input: hsl(20, 5.9%, 90%);
   --primary: hsl(207, 90%, 54%);
   --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(60, 4.8%, 95.9%);
-  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --secondary: hsl(28, 88%, 62%);
+  --secondary-foreground: hsl(211, 100%, 99%);
   --accent: hsl(60, 4.8%, 95.9%);
   --accent-foreground: hsl(24, 9.8%, 10%);
   --destructive: hsl(0, 84.2%, 60.2%);
   --destructive-foreground: hsl(60, 9.1%, 97.8%);
   --ring: hsl(20, 14.3%, 4.1%);
   --radius: 0.5rem;
+  --warning: hsl(36, 100%, 50%);
+  --success: hsl(122, 39%, 49%);
+  --surface: hsl(0, 0%, 100%);
+  --background-light: hsl(0, 0%, 98%);
 }
 
 .dark {
@@ -38,14 +42,18 @@
   --input: hsl(240, 3.7%, 15.9%);
   --primary: hsl(207, 90%, 54%);
   --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(28, 88%, 62%);
+  --secondary-foreground: hsl(211, 100%, 99%);
   --accent: hsl(240, 3.7%, 15.9%);
   --accent-foreground: hsl(0, 0%, 98%);
   --destructive: hsl(0, 62.8%, 30.6%);
   --destructive-foreground: hsl(0, 0%, 98%);
   --ring: hsl(240, 4.9%, 83.9%);
   --radius: 0.5rem;
+  --warning: hsl(36, 100%, 50%);
+  --success: hsl(122, 39%, 49%);
+  --surface: hsl(240, 10%, 3.9%);
+  --background-light: hsl(240, 3.7%, 15.9%);
 }
 
 @layer base {
@@ -55,5 +63,60 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: linear-gradient(135deg, hsl(207, 88%, 95%) 0%, hsl(231, 100%, 95%) 100%);
+  }
+  
+  .text-primary-custom {
+    color: hsl(207, 90%, 54%);
+  }
+  
+  .text-secondary-custom {
+    color: hsl(28, 88%, 62%);
+  }
+  
+  .text-warning-custom {
+    color: hsl(36, 100%, 50%);
+  }
+  
+  .text-success-custom {
+    color: hsl(122, 39%, 49%);
+  }
+  
+  .text-error-custom {
+    color: hsl(0, 84.2%, 60.2%);
+  }
+  
+  .bg-primary-custom {
+    background-color: hsl(207, 90%, 54%);
+  }
+  
+  .bg-secondary-custom {
+    background-color: hsl(28, 88%, 62%);
+  }
+  
+  .bg-warning-custom {
+    background-color: hsl(36, 100%, 50%);
+  }
+  
+  .bg-success-custom {
+    background-color: hsl(122, 39%, 49%);
+  }
+  
+  .bg-error-custom {
+    background-color: hsl(0, 84.2%, 60.2%);
+  }
+  
+  .bg-surface-custom {
+    background-color: hsl(0, 0%, 100%);
+  }
+  
+  .bg-background-light-custom {
+    background-color: hsl(0, 0%, 98%);
   }
 }
