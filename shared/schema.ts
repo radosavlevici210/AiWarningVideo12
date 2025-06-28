@@ -433,3 +433,195 @@ export type CopyrightComplaint = typeof copyrightComplaints.$inferSelect;
 export type InsertCopyrightComplaint = z.infer<typeof insertCopyrightComplaintSchema>;
 export type CopyrightReward = typeof copyrightRewards.$inferSelect;
 export type InsertCopyrightReward = z.infer<typeof insertCopyrightRewardSchema>;
+
+// Advanced AI Theft Detection & Anti-Stalking Enforcement Suite
+export const aiFingerprintDetection = pgTable("ai_fingerprint_detection", {
+  id: serial("id").primaryKey(),
+  requestFingerprint: text("request_fingerprint").notNull(),
+  aiModelDetected: text("ai_model_detected"),
+  confidenceScore: integer("confidence_score").notNull(),
+  detectionMethod: text("detection_method").notNull(),
+  userAgent: text("user_agent"),
+  ipAddress: text("ip_address"),
+  deviceId: text("device_id"),
+  suspiciousPatterns: text("suspicious_patterns").array(),
+  responseGenerated: boolean("response_generated").default(false),
+  blockedRequest: boolean("blocked_request").default(false),
+  detectedAt: timestamp("detected_at").defaultNow(),
+});
+
+export const zeroKnowledgeAbuseLog = pgTable("zero_knowledge_abuse_log", {
+  id: serial("id").primaryKey(),
+  encryptedEventHash: text("encrypted_event_hash").notNull(),
+  abuseType: text("abuse_type").notNull(),
+  privacyLevel: text("privacy_level").notNull(),
+  anonymizedMetrics: json("anonymized_metrics"),
+  evidenceHash: text("evidence_hash"),
+  legalExportReady: boolean("legal_export_ready").default(false),
+  retentionExpiry: timestamp("retention_expiry"),
+  loggedAt: timestamp("logged_at").defaultNow(),
+});
+
+export const investorDashboardMetrics = pgTable("investor_dashboard_metrics", {
+  id: serial("id").primaryKey(),
+  metricType: text("metric_type").notNull(),
+  metricValue: integer("metric_value").notNull(),
+  timeframe: text("timeframe").notNull(),
+  abuseStatsCount: integer("abuse_stats_count").default(0),
+  licenseStrikesIssued: integer("license_strikes_issued").default(0),
+  protectionEffectiveness: integer("protection_effectiveness"),
+  revenueImpact: integer("revenue_impact"),
+  communityTrustScore: integer("community_trust_score"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const communityWatchdogMode = pgTable("community_watchdog_mode", {
+  id: serial("id").primaryKey(),
+  watchdogUserId: text("watchdog_user_id").notNull(),
+  verificationLevel: text("verification_level").notNull(),
+  flaggedBehavior: text("flagged_behavior").notNull(),
+  suspiciousActivity: text("suspicious_activity").notNull(),
+  evidenceSubmitted: text("evidence_submitted").array(),
+  communityVotes: integer("community_votes").default(0),
+  moderationStatus: text("moderation_status").default("pending"),
+  rewardEligible: boolean("reward_eligible").default(false),
+  flaggedAt: timestamp("flagged_at").defaultNow(),
+});
+
+export const parallelConsoleDetection = pgTable("parallel_console_detection", {
+  id: serial("id").primaryKey(),
+  processId: text("process_id").notNull(),
+  parentProcessId: text("parent_process_id"),
+  consoleType: text("console_type").notNull(),
+  memoryAbuseDetected: boolean("memory_abuse_detected").default(false),
+  injectedCommands: text("injected_commands").array(),
+  hostPlatform: text("host_platform"),
+  shadowProcesses: text("shadow_processes").array(),
+  tamperAttempts: integer("tamper_attempts").default(0),
+  defenseMeasuresTriggered: text("defense_measures_triggered").array(),
+  detectedAt: timestamp("detected_at").defaultNow(),
+});
+
+export const realityExploitationMonitor = pgTable("reality_exploitation_monitor", {
+  id: serial("id").primaryKey(),
+  exploitationType: text("exploitation_type").notNull(),
+  targetedUser: text("targeted_user"),
+  simulationLevel: text("simulation_level").notNull(),
+  realityDistortionDetected: boolean("reality_distortion_detected").default(false),
+  psychologicalManipulation: text("psychological_manipulation").array(),
+  gameElementsAbused: text("game_elements_abused").array(),
+  protectionEngaged: boolean("protection_engaged").default(false),
+  userAlerted: boolean("user_alerted").default(false),
+  interventionRequired: boolean("intervention_required").default(false),
+  monitoredAt: timestamp("monitored_at").defaultNow(),
+});
+
+export const blockchainTamperWatch = pgTable("blockchain_tamper_watch", {
+  id: serial("id").primaryKey(),
+  blockchainNetwork: text("blockchain_network").notNull(),
+  originalSignature: text("original_signature").notNull(),
+  currentSignature: text("current_signature").notNull(),
+  tamperDetected: boolean("tamper_detected").default(false),
+  editType: text("edit_type"),
+  tamperFingerprint: text("tamper_fingerprint"),
+  unauthorizedAccess: boolean("unauthorized_access").default(false),
+  rollbackInitiated: boolean("rollback_initiated").default(false),
+  alertsTriggered: text("alerts_triggered").array(),
+  checkedAt: timestamp("checked_at").defaultNow(),
+});
+
+export const forkCloneSelfDestruct = pgTable("fork_clone_self_destruct", {
+  id: serial("id").primaryKey(),
+  originalProjectId: text("original_project_id").notNull(),
+  forkDetected: boolean("fork_detected").default(false),
+  cloneDetected: boolean("clone_detected").default(false),
+  unauthorizedDeployment: boolean("unauthorized_deployment").default(false),
+  destructSequenceTriggered: boolean("destruct_sequence_triggered").default(false),
+  violatorIpAddress: text("violator_ip_address"),
+  violatorDeviceId: text("violator_device_id"),
+  legalNoticeIssued: boolean("legal_notice_issued").default(false),
+  evidencePackageGenerated: boolean("evidence_package_generated").default(false),
+  triggeredAt: timestamp("triggered_at").defaultNow(),
+});
+
+export const governmentInactionDatabase = pgTable("government_inaction_database", {
+  id: serial("id").primaryKey(),
+  reportingEntity: text("reporting_entity").notNull(),
+  governmentAgency: text("government_agency").notNull(),
+  abuseReported: text("abuse_reported").notNull(),
+  reportDate: timestamp("report_date").notNull(),
+  responseReceived: boolean("response_received").default(false),
+  responseDate: timestamp("response_date"),
+  actionTaken: text("action_taken"),
+  inactionReason: text("inaction_reason"),
+  followUpRequired: boolean("follow_up_required").default(false),
+  publicRecordLink: text("public_record_link"),
+  evidenceIgnored: text("evidence_ignored").array(),
+  recordedAt: timestamp("recorded_at").defaultNow(),
+});
+
+// Insert schemas for new tables
+export const insertAiFingerprintDetectionSchema = createInsertSchema(aiFingerprintDetection).omit({
+  id: true,
+  detectedAt: true,
+});
+
+export const insertZeroKnowledgeAbuseLogSchema = createInsertSchema(zeroKnowledgeAbuseLog).omit({
+  id: true,
+  loggedAt: true,
+});
+
+export const insertInvestorDashboardMetricsSchema = createInsertSchema(investorDashboardMetrics).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export const insertCommunityWatchdogModeSchema = createInsertSchema(communityWatchdogMode).omit({
+  id: true,
+  flaggedAt: true,
+});
+
+export const insertParallelConsoleDetectionSchema = createInsertSchema(parallelConsoleDetection).omit({
+  id: true,
+  detectedAt: true,
+});
+
+export const insertRealityExploitationMonitorSchema = createInsertSchema(realityExploitationMonitor).omit({
+  id: true,
+  monitoredAt: true,
+});
+
+export const insertBlockchainTamperWatchSchema = createInsertSchema(blockchainTamperWatch).omit({
+  id: true,
+  checkedAt: true,
+});
+
+export const insertForkCloneSelfDestructSchema = createInsertSchema(forkCloneSelfDestruct).omit({
+  id: true,
+  triggeredAt: true,
+});
+
+export const insertGovernmentInactionDatabaseSchema = createInsertSchema(governmentInactionDatabase).omit({
+  id: true,
+  recordedAt: true,
+});
+
+// Types for advanced enforcement tables
+export type AiFingerprintDetection = typeof aiFingerprintDetection.$inferSelect;
+export type InsertAiFingerprintDetection = z.infer<typeof insertAiFingerprintDetectionSchema>;
+export type ZeroKnowledgeAbuseLog = typeof zeroKnowledgeAbuseLog.$inferSelect;
+export type InsertZeroKnowledgeAbuseLog = z.infer<typeof insertZeroKnowledgeAbuseLogSchema>;
+export type InvestorDashboardMetrics = typeof investorDashboardMetrics.$inferSelect;
+export type InsertInvestorDashboardMetrics = z.infer<typeof insertInvestorDashboardMetricsSchema>;
+export type CommunityWatchdogMode = typeof communityWatchdogMode.$inferSelect;
+export type InsertCommunityWatchdogMode = z.infer<typeof insertCommunityWatchdogModeSchema>;
+export type ParallelConsoleDetection = typeof parallelConsoleDetection.$inferSelect;
+export type InsertParallelConsoleDetection = z.infer<typeof insertParallelConsoleDetectionSchema>;
+export type RealityExploitationMonitor = typeof realityExploitationMonitor.$inferSelect;
+export type InsertRealityExploitationMonitor = z.infer<typeof insertRealityExploitationMonitorSchema>;
+export type BlockchainTamperWatch = typeof blockchainTamperWatch.$inferSelect;
+export type InsertBlockchainTamperWatch = z.infer<typeof insertBlockchainTamperWatchSchema>;
+export type ForkCloneSelfDestruct = typeof forkCloneSelfDestruct.$inferSelect;
+export type InsertForkCloneSelfDestruct = z.infer<typeof insertForkCloneSelfDestructSchema>;
+export type GovernmentInactionDatabase = typeof governmentInactionDatabase.$inferSelect;
+export type InsertGovernmentInactionDatabase = z.infer<typeof insertGovernmentInactionDatabaseSchema>;

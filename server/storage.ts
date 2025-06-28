@@ -18,6 +18,15 @@ import {
   offlineAiAccess,
   copyrightComplaints,
   copyrightRewards,
+  aiFingerprintDetection,
+  zeroKnowledgeAbuseLog,
+  investorDashboardMetrics,
+  communityWatchdogMode,
+  parallelConsoleDetection,
+  realityExploitationMonitor,
+  blockchainTamperWatch,
+  forkCloneSelfDestruct,
+  governmentInactionDatabase,
   type Report, 
   type InsertReport, 
   type QuizQuestion, 
@@ -53,7 +62,25 @@ import {
   type CopyrightComplaint,
   type InsertCopyrightComplaint,
   type CopyrightReward,
-  type InsertCopyrightReward
+  type InsertCopyrightReward,
+  type AiFingerprintDetection,
+  type InsertAiFingerprintDetection,
+  type ZeroKnowledgeAbuseLog,
+  type InsertZeroKnowledgeAbuseLog,
+  type InvestorDashboardMetrics,
+  type InsertInvestorDashboardMetrics,
+  type CommunityWatchdogMode,
+  type InsertCommunityWatchdogMode,
+  type ParallelConsoleDetection,
+  type InsertParallelConsoleDetection,
+  type RealityExploitationMonitor,
+  type InsertRealityExploitationMonitor,
+  type BlockchainTamperWatch,
+  type InsertBlockchainTamperWatch,
+  type ForkCloneSelfDestruct,
+  type InsertForkCloneSelfDestruct,
+  type GovernmentInactionDatabase,
+  type InsertGovernmentInactionDatabase
 } from "@shared/schema";
 
 export interface IStorage {
@@ -142,6 +169,51 @@ export interface IStorage {
   createCopyrightReward(reward: InsertCopyrightReward): Promise<CopyrightReward>;
   getCopyrightRewards(): Promise<CopyrightReward[]>;
   updatePaymentStatus(id: number, status: string): Promise<CopyrightReward | undefined>;
+  
+  // Advanced AI Theft Detection & Anti-Stalking Enforcement Suite
+  createAiFingerprintDetection(detection: InsertAiFingerprintDetection): Promise<AiFingerprintDetection>;
+  getAiFingerprintDetections(): Promise<AiFingerprintDetection[]>;
+  updateDetectionStatus(id: number, blocked: boolean): Promise<AiFingerprintDetection | undefined>;
+  
+  // Zero-Knowledge Abuse Logging
+  createZeroKnowledgeAbuseLog(log: InsertZeroKnowledgeAbuseLog): Promise<ZeroKnowledgeAbuseLog>;
+  getZeroKnowledgeAbuseLogs(): Promise<ZeroKnowledgeAbuseLog[]>;
+  exportEncryptedEvidence(id: number): Promise<string | undefined>;
+  
+  // Investor Dashboard Metrics
+  createInvestorDashboardMetrics(metrics: InsertInvestorDashboardMetrics): Promise<InvestorDashboardMetrics>;
+  getInvestorDashboardMetrics(): Promise<InvestorDashboardMetrics[]>;
+  updateMetricsValue(id: number, value: number): Promise<InvestorDashboardMetrics | undefined>;
+  
+  // Community Watchdog Mode
+  createCommunityWatchdogMode(watchdog: InsertCommunityWatchdogMode): Promise<CommunityWatchdogMode>;
+  getCommunityWatchdogModes(): Promise<CommunityWatchdogMode[]>;
+  updateWatchdogStatus(id: number, status: string): Promise<CommunityWatchdogMode | undefined>;
+  
+  // Parallel Console Detection
+  createParallelConsoleDetection(detection: InsertParallelConsoleDetection): Promise<ParallelConsoleDetection>;
+  getParallelConsoleDetections(): Promise<ParallelConsoleDetection[]>;
+  updateConsoleDefenses(id: number, measures: string[]): Promise<ParallelConsoleDetection | undefined>;
+  
+  // Reality Exploitation Monitor
+  createRealityExploitationMonitor(monitor: InsertRealityExploitationMonitor): Promise<RealityExploitationMonitor>;
+  getRealityExploitationMonitors(): Promise<RealityExploitationMonitor[]>;
+  updateInterventionStatus(id: number, required: boolean): Promise<RealityExploitationMonitor | undefined>;
+  
+  // Blockchain Tamper Watch
+  createBlockchainTamperWatch(watch: InsertBlockchainTamperWatch): Promise<BlockchainTamperWatch>;
+  getBlockchainTamperWatches(): Promise<BlockchainTamperWatch[]>;
+  updateTamperStatus(id: number, detected: boolean): Promise<BlockchainTamperWatch | undefined>;
+  
+  // Fork Clone Self-Destruct
+  createForkCloneSelfDestruct(destruct: InsertForkCloneSelfDestruct): Promise<ForkCloneSelfDestruct>;
+  getForkCloneSelfDestructs(): Promise<ForkCloneSelfDestruct[]>;
+  triggerSelfDestruct(id: number): Promise<boolean>;
+  
+  // Government Inaction Database  
+  createGovernmentInactionDatabase(inaction: InsertGovernmentInactionDatabase): Promise<GovernmentInactionDatabase>;
+  getGovernmentInactionDatabases(): Promise<GovernmentInactionDatabase[]>;
+  updateResponseStatus(id: number, received: boolean): Promise<GovernmentInactionDatabase | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -164,6 +236,15 @@ export class MemStorage implements IStorage {
   private offlineAccesses: Map<number, OfflineAiAccess>;
   private copyrightComplaints: Map<number, CopyrightComplaint>;
   private copyrightRewards: Map<number, CopyrightReward>;
+  private aiFingerprintDetections: Map<number, AiFingerprintDetection>;
+  private zeroKnowledgeAbuseLogs: Map<number, ZeroKnowledgeAbuseLog>;
+  private investorDashboardMetrics: Map<number, InvestorDashboardMetrics>;
+  private communityWatchdogModes: Map<number, CommunityWatchdogMode>;
+  private parallelConsoleDetections: Map<number, ParallelConsoleDetection>;
+  private realityExploitationMonitors: Map<number, RealityExploitationMonitor>;
+  private blockchainTamperWatches: Map<number, BlockchainTamperWatch>;
+  private forkCloneSelfDestructs: Map<number, ForkCloneSelfDestruct>;
+  private governmentInactionDatabases: Map<number, GovernmentInactionDatabase>;
   private currentId: number;
 
   constructor() {
@@ -186,6 +267,15 @@ export class MemStorage implements IStorage {
     this.offlineAccesses = new Map();
     this.copyrightComplaints = new Map();
     this.copyrightRewards = new Map();
+    this.aiFingerprintDetections = new Map();
+    this.zeroKnowledgeAbuseLogs = new Map();
+    this.investorDashboardMetrics = new Map();
+    this.communityWatchdogModes = new Map();
+    this.parallelConsoleDetections = new Map();
+    this.realityExploitationMonitors = new Map();
+    this.blockchainTamperWatches = new Map();
+    this.forkCloneSelfDestructs = new Map();
+    this.governmentInactionDatabases = new Map();
     this.currentId = 1;
     this.seedData();
   }
@@ -1271,6 +1361,229 @@ export class MemStorage implements IStorage {
       this.copyrightRewards.set(id, reward);
     }
     return reward;
+  }
+
+  // Advanced AI Theft Detection & Anti-Stalking Enforcement Suite Implementation
+  async createAiFingerprintDetection(insertDetection: InsertAiFingerprintDetection): Promise<AiFingerprintDetection> {
+    const id = this.currentId++;
+    const detection: AiFingerprintDetection = {
+      ...insertDetection,
+      id,
+      detectedAt: new Date()
+    };
+    this.aiFingerprintDetections.set(id, detection);
+    return detection;
+  }
+
+  async getAiFingerprintDetections(): Promise<AiFingerprintDetection[]> {
+    return Array.from(this.aiFingerprintDetections.values());
+  }
+
+  async updateDetectionStatus(id: number, blocked: boolean): Promise<AiFingerprintDetection | undefined> {
+    const detection = this.aiFingerprintDetections.get(id);
+    if (detection) {
+      detection.blockedRequest = blocked;
+      this.aiFingerprintDetections.set(id, detection);
+    }
+    return detection;
+  }
+
+  async createZeroKnowledgeAbuseLog(insertLog: InsertZeroKnowledgeAbuseLog): Promise<ZeroKnowledgeAbuseLog> {
+    const id = this.currentId++;
+    const log: ZeroKnowledgeAbuseLog = {
+      ...insertLog,
+      id,
+      loggedAt: new Date()
+    };
+    this.zeroKnowledgeAbuseLogs.set(id, log);
+    return log;
+  }
+
+  async getZeroKnowledgeAbuseLogs(): Promise<ZeroKnowledgeAbuseLog[]> {
+    return Array.from(this.zeroKnowledgeAbuseLogs.values());
+  }
+
+  async exportEncryptedEvidence(id: number): Promise<string | undefined> {
+    const log = this.zeroKnowledgeAbuseLogs.get(id);
+    if (log && log.legalExportReady) {
+      return `encrypted-evidence-export-${id}-${Date.now()}`;
+    }
+    return undefined;
+  }
+
+  async createInvestorDashboardMetrics(insertMetrics: InsertInvestorDashboardMetrics): Promise<InvestorDashboardMetrics> {
+    const id = this.currentId++;
+    const metrics: InvestorDashboardMetrics = {
+      ...insertMetrics,
+      id,
+      updatedAt: new Date()
+    };
+    this.investorDashboardMetrics.set(id, metrics);
+    return metrics;
+  }
+
+  async getInvestorDashboardMetrics(): Promise<InvestorDashboardMetrics[]> {
+    return Array.from(this.investorDashboardMetrics.values());
+  }
+
+  async updateMetricsValue(id: number, value: number): Promise<InvestorDashboardMetrics | undefined> {
+    const metrics = this.investorDashboardMetrics.get(id);
+    if (metrics) {
+      metrics.metricValue = value;
+      metrics.updatedAt = new Date();
+      this.investorDashboardMetrics.set(id, metrics);
+    }
+    return metrics;
+  }
+
+  async createCommunityWatchdogMode(insertWatchdog: InsertCommunityWatchdogMode): Promise<CommunityWatchdogMode> {
+    const id = this.currentId++;
+    const watchdog: CommunityWatchdogMode = {
+      ...insertWatchdog,
+      id,
+      flaggedAt: new Date()
+    };
+    this.communityWatchdogModes.set(id, watchdog);
+    return watchdog;
+  }
+
+  async getCommunityWatchdogModes(): Promise<CommunityWatchdogMode[]> {
+    return Array.from(this.communityWatchdogModes.values());
+  }
+
+  async updateWatchdogStatus(id: number, status: string): Promise<CommunityWatchdogMode | undefined> {
+    const watchdog = this.communityWatchdogModes.get(id);
+    if (watchdog) {
+      watchdog.moderationStatus = status;
+      this.communityWatchdogModes.set(id, watchdog);
+    }
+    return watchdog;
+  }
+
+  async createParallelConsoleDetection(insertDetection: InsertParallelConsoleDetection): Promise<ParallelConsoleDetection> {
+    const id = this.currentId++;
+    const detection: ParallelConsoleDetection = {
+      ...insertDetection,
+      id,
+      detectedAt: new Date()
+    };
+    this.parallelConsoleDetections.set(id, detection);
+    return detection;
+  }
+
+  async getParallelConsoleDetections(): Promise<ParallelConsoleDetection[]> {
+    return Array.from(this.parallelConsoleDetections.values());
+  }
+
+  async updateConsoleDefenses(id: number, measures: string[]): Promise<ParallelConsoleDetection | undefined> {
+    const detection = this.parallelConsoleDetections.get(id);
+    if (detection) {
+      detection.defenseMeasuresTriggered = measures;
+      this.parallelConsoleDetections.set(id, detection);
+    }
+    return detection;
+  }
+
+  async createRealityExploitationMonitor(insertMonitor: InsertRealityExploitationMonitor): Promise<RealityExploitationMonitor> {
+    const id = this.currentId++;
+    const monitor: RealityExploitationMonitor = {
+      ...insertMonitor,
+      id,
+      monitoredAt: new Date()
+    };
+    this.realityExploitationMonitors.set(id, monitor);
+    return monitor;
+  }
+
+  async getRealityExploitationMonitors(): Promise<RealityExploitationMonitor[]> {
+    return Array.from(this.realityExploitationMonitors.values());
+  }
+
+  async updateInterventionStatus(id: number, required: boolean): Promise<RealityExploitationMonitor | undefined> {
+    const monitor = this.realityExploitationMonitors.get(id);
+    if (monitor) {
+      monitor.interventionRequired = required;
+      this.realityExploitationMonitors.set(id, monitor);
+    }
+    return monitor;
+  }
+
+  async createBlockchainTamperWatch(insertWatch: InsertBlockchainTamperWatch): Promise<BlockchainTamperWatch> {
+    const id = this.currentId++;
+    const watch: BlockchainTamperWatch = {
+      ...insertWatch,
+      id,
+      checkedAt: new Date()
+    };
+    this.blockchainTamperWatches.set(id, watch);
+    return watch;
+  }
+
+  async getBlockchainTamperWatches(): Promise<BlockchainTamperWatch[]> {
+    return Array.from(this.blockchainTamperWatches.values());
+  }
+
+  async updateTamperStatus(id: number, detected: boolean): Promise<BlockchainTamperWatch | undefined> {
+    const watch = this.blockchainTamperWatches.get(id);
+    if (watch) {
+      watch.tamperDetected = detected;
+      this.blockchainTamperWatches.set(id, watch);
+    }
+    return watch;
+  }
+
+  async createForkCloneSelfDestruct(insertDestruct: InsertForkCloneSelfDestruct): Promise<ForkCloneSelfDestruct> {
+    const id = this.currentId++;
+    const destruct: ForkCloneSelfDestruct = {
+      ...insertDestruct,
+      id,
+      triggeredAt: new Date()
+    };
+    this.forkCloneSelfDestructs.set(id, destruct);
+    return destruct;
+  }
+
+  async getForkCloneSelfDestructs(): Promise<ForkCloneSelfDestruct[]> {
+    return Array.from(this.forkCloneSelfDestructs.values());
+  }
+
+  async triggerSelfDestruct(id: number): Promise<boolean> {
+    const destruct = this.forkCloneSelfDestructs.get(id);
+    if (destruct) {
+      destruct.destructSequenceTriggered = true;
+      destruct.legalNoticeIssued = true;
+      destruct.evidencePackageGenerated = true;
+      this.forkCloneSelfDestructs.set(id, destruct);
+      return true;
+    }
+    return false;
+  }
+
+  async createGovernmentInactionDatabase(insertInaction: InsertGovernmentInactionDatabase): Promise<GovernmentInactionDatabase> {
+    const id = this.currentId++;
+    const inaction: GovernmentInactionDatabase = {
+      ...insertInaction,
+      id,
+      recordedAt: new Date()
+    };
+    this.governmentInactionDatabases.set(id, inaction);
+    return inaction;
+  }
+
+  async getGovernmentInactionDatabases(): Promise<GovernmentInactionDatabase[]> {
+    return Array.from(this.governmentInactionDatabases.values());
+  }
+
+  async updateResponseStatus(id: number, received: boolean): Promise<GovernmentInactionDatabase | undefined> {
+    const inaction = this.governmentInactionDatabases.get(id);
+    if (inaction) {
+      inaction.responseReceived = received;
+      if (received) {
+        inaction.responseDate = new Date();
+      }
+      this.governmentInactionDatabases.set(id, inaction);
+    }
+    return inaction;
   }
 }
 

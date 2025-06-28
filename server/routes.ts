@@ -18,7 +18,16 @@ import {
   insertGithubWorkflowTheftSchema,
   insertOfflineAiAccessSchema,
   insertCopyrightComplaintSchema,
-  insertCopyrightRewardSchema
+  insertCopyrightRewardSchema,
+  insertAiFingerprintDetectionSchema,
+  insertZeroKnowledgeAbuseLogSchema,
+  insertInvestorDashboardMetricsSchema,
+  insertCommunityWatchdogModeSchema,
+  insertParallelConsoleDetectionSchema,
+  insertRealityExploitationMonitorSchema,
+  insertBlockchainTamperWatchSchema,
+  insertForkCloneSelfDestructSchema,
+  insertGovernmentInactionDatabaseSchema
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -740,6 +749,232 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(updatedReward);
     } catch (error) {
       console.error("Copyright reward payment update error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Advanced AI Theft Detection & Anti-Stalking Enforcement Suite routes
+  app.get("/api/ai-fingerprint-detection", async (req, res) => {
+    try {
+      const detections = await storage.getAiFingerprintDetections();
+      res.json(detections);
+    } catch (error) {
+      console.error("AI fingerprint detection fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/ai-fingerprint-detection", async (req, res) => {
+    try {
+      const result = insertAiFingerprintDetectionSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const detection = await storage.createAiFingerprintDetection(result.data);
+      res.status(201).json(detection);
+    } catch (error) {
+      console.error("AI fingerprint detection creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/api/zero-knowledge-abuse-logs", async (req, res) => {
+    try {
+      const logs = await storage.getZeroKnowledgeAbuseLogs();
+      res.json(logs);
+    } catch (error) {
+      console.error("Zero-knowledge abuse logs fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/zero-knowledge-abuse-logs", async (req, res) => {
+    try {
+      const result = insertZeroKnowledgeAbuseLogSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const log = await storage.createZeroKnowledgeAbuseLog(result.data);
+      res.status(201).json(log);
+    } catch (error) {
+      console.error("Zero-knowledge abuse log creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/api/investor-dashboard-metrics", async (req, res) => {
+    try {
+      const metrics = await storage.getInvestorDashboardMetrics();
+      res.json(metrics);
+    } catch (error) {
+      console.error("Investor dashboard metrics fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/investor-dashboard-metrics", async (req, res) => {
+    try {
+      const result = insertInvestorDashboardMetricsSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const metrics = await storage.createInvestorDashboardMetrics(result.data);
+      res.status(201).json(metrics);
+    } catch (error) {
+      console.error("Investor dashboard metrics creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/api/community-watchdog", async (req, res) => {
+    try {
+      const watchdogs = await storage.getCommunityWatchdogModes();
+      res.json(watchdogs);
+    } catch (error) {
+      console.error("Community watchdog fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/community-watchdog", async (req, res) => {
+    try {
+      const result = insertCommunityWatchdogModeSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const watchdog = await storage.createCommunityWatchdogMode(result.data);
+      res.status(201).json(watchdog);
+    } catch (error) {
+      console.error("Community watchdog creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/api/parallel-console-detection", async (req, res) => {
+    try {
+      const detections = await storage.getParallelConsoleDetections();
+      res.json(detections);
+    } catch (error) {
+      console.error("Parallel console detection fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/parallel-console-detection", async (req, res) => {
+    try {
+      const result = insertParallelConsoleDetectionSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const detection = await storage.createParallelConsoleDetection(result.data);
+      res.status(201).json(detection);
+    } catch (error) {
+      console.error("Parallel console detection creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/api/reality-exploitation-monitor", async (req, res) => {
+    try {
+      const monitors = await storage.getRealityExploitationMonitors();
+      res.json(monitors);
+    } catch (error) {
+      console.error("Reality exploitation monitor fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/reality-exploitation-monitor", async (req, res) => {
+    try {
+      const result = insertRealityExploitationMonitorSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const monitor = await storage.createRealityExploitationMonitor(result.data);
+      res.status(201).json(monitor);
+    } catch (error) {
+      console.error("Reality exploitation monitor creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/api/blockchain-tamper-watch", async (req, res) => {
+    try {
+      const watches = await storage.getBlockchainTamperWatches();
+      res.json(watches);
+    } catch (error) {
+      console.error("Blockchain tamper watch fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/blockchain-tamper-watch", async (req, res) => {
+    try {
+      const result = insertBlockchainTamperWatchSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const watch = await storage.createBlockchainTamperWatch(result.data);
+      res.status(201).json(watch);
+    } catch (error) {
+      console.error("Blockchain tamper watch creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/api/fork-clone-self-destruct", async (req, res) => {
+    try {
+      const destructs = await storage.getForkCloneSelfDestructs();
+      res.json(destructs);
+    } catch (error) {
+      console.error("Fork clone self-destruct fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/fork-clone-self-destruct", async (req, res) => {
+    try {
+      const result = insertForkCloneSelfDestructSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const destruct = await storage.createForkCloneSelfDestruct(result.data);
+      res.status(201).json(destruct);
+    } catch (error) {
+      console.error("Fork clone self-destruct creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/api/government-inaction-database", async (req, res) => {
+    try {
+      const records = await storage.getGovernmentInactionDatabases();
+      res.json(records);
+    } catch (error) {
+      console.error("Government inaction database fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/government-inaction-database", async (req, res) => {
+    try {
+      const result = insertGovernmentInactionDatabaseSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const record = await storage.createGovernmentInactionDatabase(result.data);
+      res.status(201).json(record);
+    } catch (error) {
+      console.error("Government inaction database creation error:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   });
