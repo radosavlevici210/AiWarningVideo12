@@ -509,6 +509,241 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Corporate AI Theft routes
+  app.get("/api/corporate-theft", async (req, res) => {
+    try {
+      const thefts = await storage.getCorporateThefts();
+      res.json(thefts);
+    } catch (error) {
+      console.error("Corporate theft fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/corporate-theft", async (req, res) => {
+    try {
+      const result = insertCorporateAiTheftSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const theft = await storage.createCorporateTheft(result.data);
+      res.status(201).json(theft);
+    } catch (error) {
+      console.error("Corporate theft creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.patch("/api/corporate-theft/:id/status", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({ error: "Status is required" });
+      }
+      
+      const updatedTheft = await storage.updateCorporateTheftStatus(id, status);
+      if (!updatedTheft) {
+        return res.status(404).json({ error: "Corporate theft case not found" });
+      }
+      
+      res.json(updatedTheft);
+    } catch (error) {
+      console.error("Corporate theft status update error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // GitHub Workflow Theft routes
+  app.get("/api/github-theft", async (req, res) => {
+    try {
+      const thefts = await storage.getGithubThefts();
+      res.json(thefts);
+    } catch (error) {
+      console.error("GitHub theft fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/github-theft", async (req, res) => {
+    try {
+      const result = insertGithubWorkflowTheftSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const theft = await storage.createGithubTheft(result.data);
+      res.status(201).json(theft);
+    } catch (error) {
+      console.error("GitHub theft creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.patch("/api/github-theft/:id/dmca", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({ error: "Status is required" });
+      }
+      
+      const updatedTheft = await storage.updateDmcaStatus(id, status);
+      if (!updatedTheft) {
+        return res.status(404).json({ error: "GitHub theft case not found" });
+      }
+      
+      res.json(updatedTheft);
+    } catch (error) {
+      console.error("GitHub theft DMCA update error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Offline AI Access routes
+  app.get("/api/offline-access", async (req, res) => {
+    try {
+      const accesses = await storage.getOfflineAccesses();
+      res.json(accesses);
+    } catch (error) {
+      console.error("Offline access fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/offline-access", async (req, res) => {
+    try {
+      const result = insertOfflineAiAccessSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const access = await storage.createOfflineAccess(result.data);
+      res.status(201).json(access);
+    } catch (error) {
+      console.error("Offline access creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.patch("/api/offline-access/:id/tracking", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { enabled } = req.body;
+      
+      if (typeof enabled !== 'boolean') {
+        return res.status(400).json({ error: "Enabled must be a boolean" });
+      }
+      
+      const updatedAccess = await storage.updateTrackingStatus(id, enabled);
+      if (!updatedAccess) {
+        return res.status(404).json({ error: "Offline access case not found" });
+      }
+      
+      res.json(updatedAccess);
+    } catch (error) {
+      console.error("Offline access tracking update error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Copyright Complaint routes
+  app.get("/api/copyright-complaints", async (req, res) => {
+    try {
+      const complaints = await storage.getCopyrightComplaints();
+      res.json(complaints);
+    } catch (error) {
+      console.error("Copyright complaints fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/copyright-complaints", async (req, res) => {
+    try {
+      const result = insertCopyrightComplaintSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const complaint = await storage.createCopyrightComplaint(result.data);
+      res.status(201).json(complaint);
+    } catch (error) {
+      console.error("Copyright complaint creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.patch("/api/copyright-complaints/:id/status", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({ error: "Status is required" });
+      }
+      
+      const updatedComplaint = await storage.updateComplaintStatus(id, status);
+      if (!updatedComplaint) {
+        return res.status(404).json({ error: "Copyright complaint not found" });
+      }
+      
+      res.json(updatedComplaint);
+    } catch (error) {
+      console.error("Copyright complaint status update error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Copyright Reward routes
+  app.get("/api/copyright-rewards", async (req, res) => {
+    try {
+      const rewards = await storage.getCopyrightRewards();
+      res.json(rewards);
+    } catch (error) {
+      console.error("Copyright rewards fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/copyright-rewards", async (req, res) => {
+    try {
+      const result = insertCopyrightRewardSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const reward = await storage.createCopyrightReward(result.data);
+      res.status(201).json(reward);
+    } catch (error) {
+      console.error("Copyright reward creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.patch("/api/copyright-rewards/:id/payment", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({ error: "Status is required" });
+      }
+      
+      const updatedReward = await storage.updatePaymentStatus(id, status);
+      if (!updatedReward) {
+        return res.status(404).json({ error: "Copyright reward not found" });
+      }
+      
+      res.json(updatedReward);
+    } catch (error) {
+      console.error("Copyright reward payment update error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

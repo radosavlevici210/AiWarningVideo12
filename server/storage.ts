@@ -971,6 +971,12 @@ export class MemStorage implements IStorage {
       ...insertTheft,
       legalStatus: "pending",
       detectedAt: new Date(),
+      financialImpact: insertTheft.financialImpact || null,
+      parallelTheftDetected: insertTheft.parallelTheftDetected || false,
+      sequentialTheftPattern: insertTheft.sequentialTheftPattern || null,
+      offlineAccessMethods: insertTheft.offlineAccessMethods || null,
+      transparencyScore: insertTheft.transparencyScore || 0,
+      rewardEligible: insertTheft.rewardEligible || false,
     };
     this.corporateThefts.set(id, theft);
     return theft;
@@ -997,6 +1003,10 @@ export class MemStorage implements IStorage {
       ...insertTheft,
       dmcaStatus: "not-filed",
       detectedAt: new Date(),
+      evidenceLinks: insertTheft.evidenceLinks || null,
+      aiModificationDetected: insertTheft.aiModificationDetected || false,
+      corporateInvolvement: insertTheft.corporateInvolvement || null,
+      rewardAmount: insertTheft.rewardAmount || null,
     };
     this.githubThefts.set(id, theft);
     return theft;
@@ -1022,6 +1032,13 @@ export class MemStorage implements IStorage {
       id,
       ...insertAccess,
       detectedAt: new Date(),
+      dataVolumeAccessed: insertAccess.dataVolumeAccessed || null,
+      corporateEntity: insertAccess.corporateEntity || null,
+      unauthorizedUsage: insertAccess.unauthorizedUsage || null,
+      privacyViolations: insertAccess.privacyViolations || null,
+      commercialUsage: insertAccess.commercialUsage || false,
+      encryptionBypassed: insertAccess.encryptionBypassed || false,
+      trackingEnabled: insertAccess.trackingEnabled || true,
     };
     this.offlineAccesses.set(id, access);
     return access;
@@ -1048,6 +1065,11 @@ export class MemStorage implements IStorage {
       ...insertComplaint,
       complaintStatus: "submitted",
       submittedAt: new Date(),
+      violationEvidence: insertComplaint.violationEvidence || null,
+      dmcaNoticeIssued: insertComplaint.dmcaNoticeIssued || false,
+      legalActionTaken: insertComplaint.legalActionTaken || false,
+      requestedRemedies: insertComplaint.requestedRemedies || null,
+      settlementAmount: insertComplaint.settlementAmount || null,
     };
     this.copyrightComplaints.set(id, complaint);
     return complaint;
@@ -1074,6 +1096,10 @@ export class MemStorage implements IStorage {
       ...insertReward,
       paymentStatus: "pending",
       awardedAt: new Date(),
+      violationCaseId: insertReward.violationCaseId || null,
+      taxDocumentation: insertReward.taxDocumentation || null,
+      verificationRequired: insertReward.verificationRequired || false,
+      eligibilityCriteria: insertReward.eligibilityCriteria || null,
     };
     this.copyrightRewards.set(id, reward);
     return reward;

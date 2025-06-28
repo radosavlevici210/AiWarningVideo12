@@ -12,6 +12,7 @@ import ConsoleControlDetection from "@/components/ConsoleControlDetection";
 import UserHarassmentDetection from "@/components/UserHarassmentDetection";
 import BlockchainIntegrity from "@/components/BlockchainIntegrity";
 import AdvancedThreatAnalysis from "@/components/AdvancedThreatAnalysis";
+import CorporateAITheft from "@/components/CorporateAITheft";
 import Resources from "@/components/Resources";
 import ReportingSystem from "@/components/ReportingSystem";
 import Footer from "@/components/Footer";
@@ -33,6 +34,7 @@ export default function Home() {
       <UserHarassmentDetection />
       <BlockchainIntegrity />
       <AdvancedThreatAnalysis />
+      <CorporateAITheft />
       <Resources />
       <ReportingSystem />
       <Footer />
