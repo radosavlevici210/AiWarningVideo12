@@ -597,6 +597,161 @@ export class MemStorage implements IStorage {
         analyzedAt: new Date()
       });
     });
+
+    // Seed Corporate AI Theft data
+    this.createCorporateTheft({
+      corporationName: "TechCorp Industries",
+      theftType: "data-scraping",
+      stolenDataType: "user-data",
+      originalOwner: "DataSecure Inc.",
+      evidenceHash: "0x8a9b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b",
+      copyrightViolationType: "unauthorized-training",
+      detectionMethod: "pattern-analysis",
+      financialImpact: 2500000,
+      parallelTheftDetected: true,
+      sequentialTheftPattern: ["data-collection", "model-training", "commercial-deployment"],
+      offlineAccessMethods: ["local-storage", "distributed-caching"],
+      transparencyScore: 25,
+      rewardEligible: true
+    });
+
+    this.createCorporateTheft({
+      corporationName: "AIVentures Ltd",
+      theftType: "model-theft",
+      stolenDataType: "proprietary-algorithms",
+      originalOwner: "InnovateAI Corp",
+      evidenceHash: "0x1f2e3d4c5b6a7980fedc98ba76543210",
+      copyrightViolationType: "direct-copy",
+      detectionMethod: "fingerprint-matching",
+      financialImpact: 5000000,
+      parallelTheftDetected: false,
+      sequentialTheftPattern: ["reverse-engineering", "code-extraction", "rebranding"],
+      offlineAccessMethods: ["container-images", "model-weights"],
+      transparencyScore: 15,
+      rewardEligible: true
+    });
+
+    // Seed GitHub Workflow Theft data
+    this.createGithubTheft({
+      originalRepository: "github.com/opensource/ml-pipeline",
+      originalOwner: "OpenSource Foundation",
+      stolenByRepository: "github.com/corporate/ai-workflow",
+      theftType: "workflow-copy",
+      workflowFingerprint: "sha256:4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d",
+      similarityScore: 94,
+      aiModificationDetected: true,
+      corporateInvolvement: "MegaCorp AI Division",
+      copyrightClaim: "Apache 2.0 License Violation",
+      evidenceLinks: ["commit-hash-abc123", "workflow-comparison-report"],
+      rewardAmount: 50000,
+      protectionLevel: "premium"
+    });
+
+    this.createGithubTheft({
+      originalRepository: "github.com/devtools/automation",
+      originalOwner: "DevTools Community",
+      stolenByRepository: "github.com/enterprise/ci-cd",
+      theftType: "action-theft",
+      workflowFingerprint: "sha256:9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b",
+      similarityScore: 87,
+      aiModificationDetected: false,
+      corporateInvolvement: "Enterprise Solutions Inc",
+      copyrightClaim: "MIT License Attribution Missing",
+      evidenceLinks: ["action-comparison", "license-violation-proof"],
+      rewardAmount: 25000,
+      protectionLevel: "standard"
+    });
+
+    // Seed Offline AI Access data
+    this.createOfflineAccess({
+      accessType: "stolen-weights",
+      detectedLocation: "Corporate Network 192.168.1.0/24",
+      aiModelIdentifier: "GPT-4-Base-Weights",
+      originalModelOwner: "OpenAI",
+      accessMethod: "torrent",
+      dataVolumeAccessed: "45GB",
+      corporateEntity: "OfflineAI Corp",
+      unauthorizedUsage: ["commercial-inference", "model-fine-tuning"],
+      privacyViolations: ["user-data-processing", "biometric-analysis"],
+      commercialUsage: true,
+      encryptionBypassed: true,
+      trackingEnabled: true,
+      riskLevel: "critical"
+    });
+
+    this.createOfflineAccess({
+      accessType: "cached-data",
+      detectedLocation: "Edge Computing Cluster",
+      aiModelIdentifier: "Claude-Sonnet-Cache",
+      originalModelOwner: "Anthropic",
+      accessMethod: "direct-download",
+      dataVolumeAccessed: "128GB",
+      corporateEntity: "EdgeTech Solutions",
+      unauthorizedUsage: ["offline-chat", "document-processing"],
+      privacyViolations: ["personal-data-analysis"],
+      commercialUsage: true,
+      encryptionBypassed: false,
+      trackingEnabled: true,
+      riskLevel: "high"
+    });
+
+    // Seed Copyright Complaint data
+    this.createCopyrightComplaint({
+      complainantName: "Sarah Chen",
+      complainantEmail: "sarah.chen@creativeworks.com",
+      copyrightOwnershipProof: "US Copyright Registration TX0009876543",
+      violationType: "ai-training-theft",
+      violatingEntity: "TechGiant AI Division",
+      originalWorkDescription: "Digital Art Collection: Future Landscapes",
+      violationEvidence: ["training-dataset-analysis", "generated-image-comparison"],
+      dmcaNoticeIssued: true,
+      legalActionTaken: false,
+      requestedRemedies: ["cease-desist", "dataset-removal", "compensation"],
+      settlementAmount: 150000,
+      priorityLevel: "high"
+    });
+
+    this.createCopyrightComplaint({
+      complainantName: "CodeCraft Studios",
+      complainantEmail: "legal@codecraft.dev",
+      copyrightOwnershipProof: "GitHub Repository with timestamps",
+      violationType: "model-replication",
+      violatingEntity: "AI-Code-Gen Inc",
+      originalWorkDescription: "Proprietary Code Generation Algorithms",
+      violationEvidence: ["code-similarity-analysis", "model-output-comparison"],
+      dmcaNoticeIssued: false,
+      legalActionTaken: true,
+      requestedRemedies: ["model-destruction", "profit-sharing", "public-apology"],
+      priorityLevel: "urgent"
+    });
+
+    // Seed Copyright Reward data
+    this.createCopyrightReward({
+      recipientName: "Digital Artists Union",
+      recipientEmail: "rewards@digitalartists.org",
+      copyrightWorkTitle: "Protected Artist Portfolio Collection",
+      rewardType: "detection-bonus",
+      rewardAmount: 75000,
+      rewardReason: "Successfully detected unauthorized AI training on copyrighted artwork",
+      violationCaseId: 1,
+      paymentMethod: "bank-transfer",
+      taxDocumentation: "1099-MISC Filed",
+      verificationRequired: false,
+      eligibilityCriteria: ["copyright-holder", "evidence-provider", "victim-impact"]
+    });
+
+    this.createCopyrightReward({
+      recipientName: "Open Source Defenders",
+      recipientEmail: "team@osdefenders.org",
+      copyrightWorkTitle: "Community-Developed ML Framework",
+      rewardType: "legal-victory",
+      rewardAmount: 200000,
+      rewardReason: "Won landmark case against corporate theft of open-source ML code",
+      violationCaseId: 2,
+      paymentMethod: "crypto",
+      verificationRequired: true,
+      eligibilityCriteria: ["legal-standing", "community-benefit", "precedent-setting"]
+    });
   }
 
   async createReport(insertReport: InsertReport): Promise<Report> {
