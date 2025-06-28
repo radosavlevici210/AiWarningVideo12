@@ -8,6 +8,11 @@ import {
   intellectualPropertyThefts,
   aiAgentMonitoring,
   truthVerification,
+  apiTheftMonitoring,
+  aiConsoleControl,
+  userHarassmentDetection,
+  blockchainAiIntegrity,
+  advancedThreatAnalysis,
   type Report, 
   type InsertReport, 
   type QuizQuestion, 
@@ -23,7 +28,17 @@ import {
   type AiAgentMonitoring,
   type InsertAiAgentMonitoring,
   type TruthVerification,
-  type InsertTruthVerification
+  type InsertTruthVerification,
+  type ApiTheftMonitoring,
+  type InsertApiTheft,
+  type AiConsoleControl,
+  type InsertAiConsoleControl,
+  type UserHarassmentDetection,
+  type InsertUserHarassment,
+  type BlockchainAiIntegrity,
+  type InsertBlockchainIntegrity,
+  type AdvancedThreatAnalysis,
+  type InsertAdvancedThreat
 } from "@shared/schema";
 
 export interface IStorage {
@@ -62,6 +77,31 @@ export interface IStorage {
   createTruthVerification(verification: InsertTruthVerification): Promise<TruthVerification>;
   getTruthVerifications(): Promise<TruthVerification[]>;
   verifyContentIntegrity(contentId: number, currentHash: string): Promise<boolean>;
+  
+  // API Theft Monitoring
+  createApiTheft(theft: InsertApiTheft): Promise<ApiTheftMonitoring>;
+  getApiThefts(): Promise<ApiTheftMonitoring[]>;
+  updateApiTheftStatus(id: number, status: string): Promise<ApiTheftMonitoring | undefined>;
+  
+  // AI Console Control
+  createConsoleControl(control: InsertAiConsoleControl): Promise<AiConsoleControl>;
+  getConsoleControls(): Promise<AiConsoleControl[]>;
+  updateConsoleControl(id: number, updates: Partial<AiConsoleControl>): Promise<AiConsoleControl | undefined>;
+  
+  // User Harassment Detection
+  createHarassmentCase(harassment: InsertUserHarassment): Promise<UserHarassmentDetection>;
+  getHarassmentCases(): Promise<UserHarassmentDetection[]>;
+  updateHarassmentStatus(id: number, status: string): Promise<UserHarassmentDetection | undefined>;
+  
+  // Blockchain AI Integrity
+  createBlockchainRecord(record: InsertBlockchainIntegrity): Promise<BlockchainAiIntegrity>;
+  getBlockchainRecords(): Promise<BlockchainAiIntegrity[]>;
+  verifyBlockchainIntegrity(id: number): Promise<boolean>;
+  
+  // Advanced Threat Analysis
+  createThreatAnalysis(analysis: InsertAdvancedThreat): Promise<AdvancedThreatAnalysis>;
+  getThreatAnalyses(): Promise<AdvancedThreatAnalysis[]>;
+  updateAnalysisConfidence(id: number, confidence: number): Promise<AdvancedThreatAnalysis | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -74,6 +114,11 @@ export class MemStorage implements IStorage {
   private ipThefts: Map<number, IntellectualPropertyTheft>;
   private aiAgentMonitoring: Map<number, AiAgentMonitoring>;
   private truthVerifications: Map<number, TruthVerification>;
+  private apiThefts: Map<number, ApiTheftMonitoring>;
+  private consoleControls: Map<number, AiConsoleControl>;
+  private harassmentCases: Map<number, UserHarassmentDetection>;
+  private blockchainRecords: Map<number, BlockchainAiIntegrity>;
+  private threatAnalyses: Map<number, AdvancedThreatAnalysis>;
   private currentId: number;
 
   constructor() {
@@ -86,6 +131,11 @@ export class MemStorage implements IStorage {
     this.ipThefts = new Map();
     this.aiAgentMonitoring = new Map();
     this.truthVerifications = new Map();
+    this.apiThefts = new Map();
+    this.consoleControls = new Map();
+    this.harassmentCases = new Map();
+    this.blockchainRecords = new Map();
+    this.threatAnalyses = new Map();
     this.currentId = 1;
     this.seedData();
   }
@@ -292,6 +342,211 @@ export class MemStorage implements IStorage {
         integrityStatus: verification.manipulationDetected ? "modified" : "intact"
       });
     });
+
+    // Seed API theft monitoring data
+    const apiTheftData: Omit<ApiTheftMonitoring, 'id' | 'recoveryStatus' | 'detectedAt'>[] = [
+      {
+        apiOwner: "OpenAI",
+        apiEndpoint: "/v1/chat/completions",
+        stolenByEntity: "Unauthorized Competitor",
+        theftMethod: "credential-theft",
+        evidenceData: ["Suspicious API calls from unknown IPs", "Rate limit violations", "Unauthorized key usage"],
+        impactAssessment: "severe",
+        financialLoss: 250000,
+        userDataCompromised: true,
+        blockchainTraceId: "0x1a2b3c4d5e6f7890abcdef1234567890"
+      },
+      {
+        apiOwner: "Google Cloud AI",
+        apiEndpoint: "/v1/projects/*/locations/*/models/*:predict",
+        stolenByEntity: "Nation State Actor",
+        theftMethod: "reverse-engineering",
+        evidenceData: ["Model extraction attempts", "Systematic probing", "Intelligence gathering"],
+        impactAssessment: "critical",
+        financialLoss: 1000000,
+        userDataCompromised: false,
+        blockchainTraceId: "0xfedcba0987654321abcdef1234567890"
+      }
+    ];
+
+    apiTheftData.forEach(theft => {
+      const id = this.currentId++;
+      this.apiThefts.set(id, {
+        ...theft,
+        id,
+        recoveryStatus: "investigating",
+        detectedAt: new Date()
+      });
+    });
+
+    // Seed AI console control data
+    const consoleControlData: Omit<AiConsoleControl, 'id' | 'threatLevel' | 'detectedAt'>[] = [
+      {
+        consoleType: "admin",
+        controlledEntity: "ChatGPT Enterprise Console",
+        controlMethod: "privilege-escalation",
+        unauthorizedActions: ["Modified user permissions", "Accessed confidential data", "Changed security settings"],
+        privilegeLevel: "admin",
+        dataAccessLevel: "confidential",
+        manipulationTechniques: ["Social engineering", "Credential stuffing", "Session hijacking"],
+        victimUsers: ["admin@company.com", "security@company.com"],
+        controlDuration: 45,
+        preventionMeasures: ["Multi-factor authentication", "Session timeout", "Activity monitoring"]
+      },
+      {
+        consoleType: "developer",
+        controlledEntity: "Claude API Dashboard",
+        controlMethod: "backdoor",
+        unauthorizedActions: ["Modified API keys", "Changed rate limits", "Accessed usage logs"],
+        privilegeLevel: "root",
+        dataAccessLevel: "restricted",
+        manipulationTechniques: ["Code injection", "Supply chain attack", "Insider threat"],
+        victimUsers: ["dev-team@startup.com"],
+        controlDuration: 120,
+        preventionMeasures: ["Code signing", "Access controls", "Audit logs"]
+      }
+    ];
+
+    consoleControlData.forEach(control => {
+      const id = this.currentId++;
+      this.consoleControls.set(id, {
+        ...control,
+        id,
+        threatLevel: "critical",
+        detectedAt: new Date()
+      });
+    });
+
+    // Seed user harassment detection data
+    const harassmentData: Omit<UserHarassmentDetection, 'id' | 'legalStatus' | 'detectedAt'>[] = [
+      {
+        harassmentType: "deepfake-harassment",
+        victimIdentifier: "victim001@email.com",
+        perpetratorInfo: "Anonymous user using AI tools",
+        aiToolsUsed: ["FaceSwap AI", "DeepFaceLab", "Voice conversion tools"],
+        harassmentContent: "Created and distributed deepfake videos without consent for harassment purposes",
+        platformsAffected: ["Instagram", "TikTok", "Twitter", "Private messaging"],
+        severityLevel: "extreme",
+        psychologicalImpact: "Severe emotional distress, anxiety, reputation damage",
+        evidenceLinks: ["https://evidence1.com/deepfake.mp4", "https://evidence2.com/harassment.jpg"],
+        reportingSource: "victim",
+        actionsTaken: ["Platform reports filed", "Legal consultation", "Evidence preservation"],
+        blockchainEvidence: "0x789abc123def456789abcdef012345678901"
+      },
+      {
+        harassmentType: "ai-impersonation",
+        victimIdentifier: "ceo@techcompany.com",
+        perpetratorInfo: "Competitor organization",
+        aiToolsUsed: ["Voice cloning AI", "Text generation AI", "Behavioral modeling"],
+        harassmentContent: "Impersonated CEO in calls to damage business relationships and reputation",
+        platformsAffected: ["Business calls", "Email communications", "LinkedIn"],
+        severityLevel: "high",
+        psychologicalImpact: "Professional reputation damage, business relationship strain",
+        evidenceLinks: ["https://evidence3.com/fake-call.wav", "https://evidence4.com/impersonation.txt"],
+        reportingSource: "automated-detection",
+        actionsTaken: ["Security alert issued", "Voice authentication implemented", "Legal notice sent"],
+        blockchainEvidence: "0x456def789abc123456789abcdef012345"
+      }
+    ];
+
+    harassmentData.forEach(harassment => {
+      const id = this.currentId++;
+      this.harassmentCases.set(id, {
+        ...harassment,
+        id,
+        legalStatus: "investigating",
+        detectedAt: new Date()
+      });
+    });
+
+    // Seed blockchain AI integrity data
+    const blockchainData: Omit<BlockchainAiIntegrity, 'id' | 'consensusStatus' | 'createdAt'>[] = [
+      {
+        blockchainNetwork: "ethereum",
+        contractAddress: "0x742d35Cc6634C0532925a3b8D3Ac92CAF0FD7c",
+        aiSystemIdentifier: "GPT-4-Enterprise-Instance-001",
+        integrityHash: "0x1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890",
+        previousHash: "0x0987654321fedcba0987654321fedcba0987654321fedcba0987654321fedcba",
+        blockNumber: 18500000,
+        transactionId: "0xabc123def456789abc123def456789abc123def456789abc123def456789abc123",
+        validatorNodes: ["validator1.eth", "validator2.eth", "validator3.eth"],
+        manipulationAttempts: ["Unauthorized model updates", "Parameter tampering"],
+        integrityScore: 98,
+        smartContractEvents: ["IntegrityVerified", "TamperAttemptDetected"],
+        gasCost: 150000,
+        verificationProof: "0xproof123456789abcdef123456789abcdef123456789abcdef123456789abcdef"
+      },
+      {
+        blockchainNetwork: "polygon",
+        contractAddress: "0x123abc456def789abc123def456789abc123def4",
+        aiSystemIdentifier: "Claude-Enterprise-Instance-002",
+        integrityHash: "0xfedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321",
+        previousHash: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+        blockNumber: 45200000,
+        transactionId: "0xdef456789abc123def456789abc123def456789abc123def456789abc123def456",
+        validatorNodes: ["polygon-validator1", "polygon-validator2"],
+        manipulationAttempts: [],
+        integrityScore: 100,
+        smartContractEvents: ["IntegrityConfirmed"],
+        gasCost: 75000,
+        verificationProof: "0xproof789abcdef123456789abcdef123456789abcdef123456789abcdef123456"
+      }
+    ];
+
+    blockchainData.forEach(record => {
+      const id = this.currentId++;
+      this.blockchainRecords.set(id, {
+        ...record,
+        id,
+        consensusStatus: "confirmed",
+        createdAt: new Date()
+      });
+    });
+
+    // Seed advanced threat analysis data
+    const threatAnalysisData: Omit<AdvancedThreatAnalysis, 'id' | 'analyzedAt'>[] = [
+      {
+        threatCategory: "api-theft",
+        threatVector: "Credential compromise and unauthorized access",
+        sophisticationLevel: "advanced",
+        attackPattern: ["Reconnaissance", "Initial access", "Privilege escalation", "Data exfiltration"],
+        targetedAssets: ["API endpoints", "User data", "Model parameters", "Usage statistics"],
+        geolocation: "Eastern Europe",
+        attributionConfidence: 85,
+        predictiveIndicators: ["Unusual traffic patterns", "Geographic anomalies", "Rate limit violations"],
+        mitigationStrategies: ["Enhanced authentication", "IP whitelisting", "Rate limiting", "Monitoring"],
+        businessImpact: "major",
+        recoveryTimeEstimate: 72,
+        threatIntelligence: ["Known threat actor group", "Similar attack patterns observed"],
+        analysisConfidence: 92,
+        analysisMethod: "ai-assisted"
+      },
+      {
+        threatCategory: "user-harassment",
+        threatVector: "AI-powered deepfake and voice cloning for harassment",
+        sophisticationLevel: "intermediate",
+        attackPattern: ["Target selection", "Content generation", "Distribution", "Amplification"],
+        targetedAssets: ["Personal reputation", "Professional standing", "Psychological well-being"],
+        geolocation: "Unknown",
+        attributionConfidence: 45,
+        predictiveIndicators: ["Social media activity", "AI tool usage patterns", "Content creation timestamps"],
+        mitigationStrategies: ["Content verification", "Platform reporting", "Legal action", "Support services"],
+        businessImpact: "moderate",
+        recoveryTimeEstimate: 168,
+        threatIntelligence: ["Emerging threat pattern", "Multiple victims identified"],
+        analysisConfidence: 78,
+        analysisMethod: "hybrid"
+      }
+    ];
+
+    threatAnalysisData.forEach(analysis => {
+      const id = this.currentId++;
+      this.threatAnalyses.set(id, {
+        ...analysis,
+        id,
+        analyzedAt: new Date()
+      });
+    });
   }
 
   async createReport(insertReport: InsertReport): Promise<Report> {
@@ -487,6 +742,175 @@ export class MemStorage implements IStorage {
       return isIntact;
     }
     return false;
+  }
+
+  // API Theft Monitoring
+  async createApiTheft(insertTheft: InsertApiTheft): Promise<ApiTheftMonitoring> {
+    const id = this.currentId++;
+    const theft: ApiTheftMonitoring = {
+      ...insertTheft,
+      id,
+      recoveryStatus: "investigating",
+      detectedAt: new Date(),
+      stolenByEntity: insertTheft.stolenByEntity || null,
+      evidenceData: insertTheft.evidenceData || null,
+      financialLoss: insertTheft.financialLoss || null,
+      blockchainTraceId: insertTheft.blockchainTraceId || null,
+      userDataCompromised: insertTheft.userDataCompromised ?? false
+    };
+    this.apiThefts.set(id, theft);
+    return theft;
+  }
+
+  async getApiThefts(): Promise<ApiTheftMonitoring[]> {
+    return Array.from(this.apiThefts.values());
+  }
+
+  async updateApiTheftStatus(id: number, status: string): Promise<ApiTheftMonitoring | undefined> {
+    const theft = this.apiThefts.get(id);
+    if (theft) {
+      const updatedTheft = { ...theft, recoveryStatus: status };
+      this.apiThefts.set(id, updatedTheft);
+      return updatedTheft;
+    }
+    return undefined;
+  }
+
+  // AI Console Control
+  async createConsoleControl(insertControl: InsertAiConsoleControl): Promise<AiConsoleControl> {
+    const id = this.currentId++;
+    const control: AiConsoleControl = {
+      ...insertControl,
+      id,
+      threatLevel: "medium",
+      detectedAt: new Date(),
+      unauthorizedActions: insertControl.unauthorizedActions || null,
+      manipulationTechniques: insertControl.manipulationTechniques || null,
+      victimUsers: insertControl.victimUsers || null,
+      controlDuration: insertControl.controlDuration || null,
+      preventionMeasures: insertControl.preventionMeasures || null
+    };
+    this.consoleControls.set(id, control);
+    return control;
+  }
+
+  async getConsoleControls(): Promise<AiConsoleControl[]> {
+    return Array.from(this.consoleControls.values());
+  }
+
+  async updateConsoleControl(id: number, updates: Partial<AiConsoleControl>): Promise<AiConsoleControl | undefined> {
+    const control = this.consoleControls.get(id);
+    if (control) {
+      const updatedControl = { ...control, ...updates };
+      this.consoleControls.set(id, updatedControl);
+      return updatedControl;
+    }
+    return undefined;
+  }
+
+  // User Harassment Detection
+  async createHarassmentCase(insertHarassment: InsertUserHarassment): Promise<UserHarassmentDetection> {
+    const id = this.currentId++;
+    const harassment: UserHarassmentDetection = {
+      ...insertHarassment,
+      id,
+      legalStatus: "reported",
+      detectedAt: new Date(),
+      perpetratorInfo: insertHarassment.perpetratorInfo || null,
+      aiToolsUsed: insertHarassment.aiToolsUsed || null,
+      platformsAffected: insertHarassment.platformsAffected || null,
+      psychologicalImpact: insertHarassment.psychologicalImpact || null,
+      evidenceLinks: insertHarassment.evidenceLinks || null,
+      reportingSource: insertHarassment.reportingSource || null,
+      actionsTaken: insertHarassment.actionsTaken || null,
+      blockchainEvidence: insertHarassment.blockchainEvidence || null
+    };
+    this.harassmentCases.set(id, harassment);
+    return harassment;
+  }
+
+  async getHarassmentCases(): Promise<UserHarassmentDetection[]> {
+    return Array.from(this.harassmentCases.values());
+  }
+
+  async updateHarassmentStatus(id: number, status: string): Promise<UserHarassmentDetection | undefined> {
+    const harassment = this.harassmentCases.get(id);
+    if (harassment) {
+      const updatedHarassment = { ...harassment, legalStatus: status };
+      this.harassmentCases.set(id, updatedHarassment);
+      return updatedHarassment;
+    }
+    return undefined;
+  }
+
+  // Blockchain AI Integrity
+  async createBlockchainRecord(insertRecord: InsertBlockchainIntegrity): Promise<BlockchainAiIntegrity> {
+    const id = this.currentId++;
+    const record: BlockchainAiIntegrity = {
+      ...insertRecord,
+      id,
+      consensusStatus: "pending",
+      createdAt: new Date(),
+      contractAddress: insertRecord.contractAddress || null,
+      previousHash: insertRecord.previousHash || null,
+      blockNumber: insertRecord.blockNumber || null,
+      transactionId: insertRecord.transactionId || null,
+      validatorNodes: insertRecord.validatorNodes || null,
+      manipulationAttempts: insertRecord.manipulationAttempts || null,
+      smartContractEvents: insertRecord.smartContractEvents || null,
+      gasCost: insertRecord.gasCost || null,
+      verificationProof: insertRecord.verificationProof || null
+    };
+    this.blockchainRecords.set(id, record);
+    return record;
+  }
+
+  async getBlockchainRecords(): Promise<BlockchainAiIntegrity[]> {
+    return Array.from(this.blockchainRecords.values());
+  }
+
+  async verifyBlockchainIntegrity(id: number): Promise<boolean> {
+    const record = this.blockchainRecords.get(id);
+    if (record) {
+      const updatedRecord = { ...record, consensusStatus: "confirmed" };
+      this.blockchainRecords.set(id, updatedRecord as BlockchainAiIntegrity);
+      return true;
+    }
+    return false;
+  }
+
+  // Advanced Threat Analysis
+  async createThreatAnalysis(insertAnalysis: InsertAdvancedThreat): Promise<AdvancedThreatAnalysis> {
+    const id = this.currentId++;
+    const analysis: AdvancedThreatAnalysis = {
+      ...insertAnalysis,
+      id,
+      analyzedAt: new Date(),
+      attackPattern: insertAnalysis.attackPattern || null,
+      targetedAssets: insertAnalysis.targetedAssets || null,
+      geolocation: insertAnalysis.geolocation || null,
+      attributionConfidence: insertAnalysis.attributionConfidence || null,
+      predictiveIndicators: insertAnalysis.predictiveIndicators || null,
+      mitigationStrategies: insertAnalysis.mitigationStrategies || null,
+      recoveryTimeEstimate: insertAnalysis.recoveryTimeEstimate || null,
+      threatIntelligence: insertAnalysis.threatIntelligence || null
+    };
+    this.threatAnalyses.set(id, analysis);
+    return analysis;
+  }
+
+  async getThreatAnalyses(): Promise<AdvancedThreatAnalysis[]> {
+    return Array.from(this.threatAnalyses.values());
+  }
+
+  async updateAnalysisConfidence(id: number, confidence: number): Promise<AdvancedThreatAnalysis | undefined> {
+    const analysis = this.threatAnalyses.get(id);
+    if (analysis) {
+      const updatedAnalysis = { ...analysis, analysisConfidence: confidence };
+      this.threatAnalyses.set(id, updatedAnalysis);
+      return updatedAnalysis;
+    }
+    return undefined;
   }
 }
 

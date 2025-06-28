@@ -8,7 +8,12 @@ import {
   insertBusinessThreatSchema,
   insertIpTheftSchema,
   insertAiAgentMonitoringSchema,
-  insertTruthVerificationSchema
+  insertTruthVerificationSchema,
+  insertApiTheftSchema,
+  insertAiConsoleControlSchema,
+  insertUserHarassmentSchema,
+  insertBlockchainIntegritySchema,
+  insertAdvancedThreatSchema
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -275,6 +280,227 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ isIntact, message: isIntact ? "Content is intact" : "Content has been modified" });
     } catch (error) {
       res.status(500).json({ message: "Failed to verify content integrity" });
+    }
+  });
+
+  // API Theft Monitoring routes
+  app.get("/api/api-theft", async (req, res) => {
+    try {
+      const thefts = await storage.getApiThefts();
+      res.json(thefts);
+    } catch (error) {
+      console.error("API theft fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/api-theft", async (req, res) => {
+    try {
+      const result = insertApiTheftSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const theft = await storage.createApiTheft(result.data);
+      res.status(201).json(theft);
+    } catch (error) {
+      console.error("API theft creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.patch("/api/api-theft/:id/status", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({ error: "Status is required" });
+      }
+      
+      const updatedTheft = await storage.updateApiTheftStatus(id, status);
+      if (!updatedTheft) {
+        return res.status(404).json({ error: "API theft not found" });
+      }
+      
+      res.json(updatedTheft);
+    } catch (error) {
+      console.error("API theft status update error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Console Control routes
+  app.get("/api/console-controls", async (req, res) => {
+    try {
+      const controls = await storage.getConsoleControls();
+      res.json(controls);
+    } catch (error) {
+      console.error("Console controls fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/console-controls", async (req, res) => {
+    try {
+      const result = insertAiConsoleControlSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const control = await storage.createConsoleControl(result.data);
+      res.status(201).json(control);
+    } catch (error) {
+      console.error("Console control creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.patch("/api/console-controls/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updates = req.body;
+      
+      const updatedControl = await storage.updateConsoleControl(id, updates);
+      if (!updatedControl) {
+        return res.status(404).json({ error: "Console control not found" });
+      }
+      
+      res.json(updatedControl);
+    } catch (error) {
+      console.error("Console control update error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // User Harassment Detection routes
+  app.get("/api/harassment-cases", async (req, res) => {
+    try {
+      const cases = await storage.getHarassmentCases();
+      res.json(cases);
+    } catch (error) {
+      console.error("Harassment cases fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/harassment-cases", async (req, res) => {
+    try {
+      const result = insertUserHarassmentSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const harassmentCase = await storage.createHarassmentCase(result.data);
+      res.status(201).json(harassmentCase);
+    } catch (error) {
+      console.error("Harassment case creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.patch("/api/harassment-cases/:id/status", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({ error: "Status is required" });
+      }
+      
+      const updatedCase = await storage.updateHarassmentStatus(id, status);
+      if (!updatedCase) {
+        return res.status(404).json({ error: "Harassment case not found" });
+      }
+      
+      res.json(updatedCase);
+    } catch (error) {
+      console.error("Harassment case status update error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Blockchain AI Integrity routes
+  app.get("/api/blockchain-records", async (req, res) => {
+    try {
+      const records = await storage.getBlockchainRecords();
+      res.json(records);
+    } catch (error) {
+      console.error("Blockchain records fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/blockchain-records", async (req, res) => {
+    try {
+      const result = insertBlockchainIntegritySchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const record = await storage.createBlockchainRecord(result.data);
+      res.status(201).json(record);
+    } catch (error) {
+      console.error("Blockchain record creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/blockchain-records/:id/verify", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const result = await storage.verifyBlockchainIntegrity(id);
+      res.json({ verified: result });
+    } catch (error) {
+      console.error("Blockchain verification error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Advanced Threat Analysis routes
+  app.get("/api/threat-analyses", async (req, res) => {
+    try {
+      const analyses = await storage.getThreatAnalyses();
+      res.json(analyses);
+    } catch (error) {
+      console.error("Threat analyses fetch error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/threat-analyses", async (req, res) => {
+    try {
+      const result = insertAdvancedThreatSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid request data", details: result.error.errors });
+      }
+      
+      const analysis = await storage.createThreatAnalysis(result.data);
+      res.status(201).json(analysis);
+    } catch (error) {
+      console.error("Threat analysis creation error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.patch("/api/threat-analyses/:id/confidence", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { confidence } = req.body;
+      
+      if (typeof confidence !== 'number' || confidence < 0 || confidence > 100) {
+        return res.status(400).json({ error: "Confidence must be a number between 0 and 100" });
+      }
+      
+      const updatedAnalysis = await storage.updateAnalysisConfidence(id, confidence);
+      if (!updatedAnalysis) {
+        return res.status(404).json({ error: "Threat analysis not found" });
+      }
+      
+      res.json(updatedAnalysis);
+    } catch (error) {
+      console.error("Threat analysis confidence update error:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
   });
 

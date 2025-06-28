@@ -23,6 +23,11 @@ export default function Header() {
     { id: "ip-protection", label: "IP Security" },
     { id: "ai-monitoring", label: "AI Monitoring" },
     { id: "truth-verification", label: "Truth Verification" },
+    { id: "api-theft-monitoring", label: "API Theft" },
+    { id: "console-control", label: "Console Control" },
+    { id: "harassment-detection", label: "Harassment Detection" },
+    { id: "blockchain-integrity", label: "Blockchain Integrity" },
+    { id: "threat-analysis", label: "Threat Analysis" },
     { id: "resources", label: "Resources" },
   ];
 
