@@ -13,7 +13,12 @@ import {
   insertAiConsoleControlSchema,
   insertUserHarassmentSchema,
   insertBlockchainIntegritySchema,
-  insertAdvancedThreatSchema
+  insertAdvancedThreatSchema,
+  insertCorporateAiTheftSchema,
+  insertGithubWorkflowTheftSchema,
+  insertOfflineAiAccessSchema,
+  insertCopyrightComplaintSchema,
+  insertCopyrightRewardSchema
 } from "@shared/schema";
 import { z } from "zod";
 

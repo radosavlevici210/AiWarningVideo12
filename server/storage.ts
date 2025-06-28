@@ -13,6 +13,11 @@ import {
   userHarassmentDetection,
   blockchainAiIntegrity,
   advancedThreatAnalysis,
+  corporateAiTheft,
+  githubWorkflowTheft,
+  offlineAiAccess,
+  copyrightComplaints,
+  copyrightRewards,
   type Report, 
   type InsertReport, 
   type QuizQuestion, 
@@ -38,7 +43,17 @@ import {
   type BlockchainAiIntegrity,
   type InsertBlockchainIntegrity,
   type AdvancedThreatAnalysis,
-  type InsertAdvancedThreat
+  type InsertAdvancedThreat,
+  type CorporateAiTheft,
+  type InsertCorporateAiTheft,
+  type GithubWorkflowTheft,
+  type InsertGithubWorkflowTheft,
+  type OfflineAiAccess,
+  type InsertOfflineAiAccess,
+  type CopyrightComplaint,
+  type InsertCopyrightComplaint,
+  type CopyrightReward,
+  type InsertCopyrightReward
 } from "@shared/schema";
 
 export interface IStorage {
@@ -102,6 +117,31 @@ export interface IStorage {
   createThreatAnalysis(analysis: InsertAdvancedThreat): Promise<AdvancedThreatAnalysis>;
   getThreatAnalyses(): Promise<AdvancedThreatAnalysis[]>;
   updateAnalysisConfidence(id: number, confidence: number): Promise<AdvancedThreatAnalysis | undefined>;
+  
+  // Corporate AI Theft Detection
+  createCorporateTheft(theft: InsertCorporateAiTheft): Promise<CorporateAiTheft>;
+  getCorporateThefts(): Promise<CorporateAiTheft[]>;
+  updateCorporateTheftStatus(id: number, status: string): Promise<CorporateAiTheft | undefined>;
+  
+  // GitHub Workflow Theft Protection
+  createGithubTheft(theft: InsertGithubWorkflowTheft): Promise<GithubWorkflowTheft>;
+  getGithubThefts(): Promise<GithubWorkflowTheft[]>;
+  updateDmcaStatus(id: number, status: string): Promise<GithubWorkflowTheft | undefined>;
+  
+  // Offline AI Access Monitoring
+  createOfflineAccess(access: InsertOfflineAiAccess): Promise<OfflineAiAccess>;
+  getOfflineAccesses(): Promise<OfflineAiAccess[]>;
+  updateTrackingStatus(id: number, enabled: boolean): Promise<OfflineAiAccess | undefined>;
+  
+  // Copyright Complaint System
+  createCopyrightComplaint(complaint: InsertCopyrightComplaint): Promise<CopyrightComplaint>;
+  getCopyrightComplaints(): Promise<CopyrightComplaint[]>;
+  updateComplaintStatus(id: number, status: string): Promise<CopyrightComplaint | undefined>;
+  
+  // Copyright Reward System
+  createCopyrightReward(reward: InsertCopyrightReward): Promise<CopyrightReward>;
+  getCopyrightRewards(): Promise<CopyrightReward[]>;
+  updatePaymentStatus(id: number, status: string): Promise<CopyrightReward | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -119,6 +159,11 @@ export class MemStorage implements IStorage {
   private harassmentCases: Map<number, UserHarassmentDetection>;
   private blockchainRecords: Map<number, BlockchainAiIntegrity>;
   private threatAnalyses: Map<number, AdvancedThreatAnalysis>;
+  private corporateThefts: Map<number, CorporateAiTheft>;
+  private githubThefts: Map<number, GithubWorkflowTheft>;
+  private offlineAccesses: Map<number, OfflineAiAccess>;
+  private copyrightComplaints: Map<number, CopyrightComplaint>;
+  private copyrightRewards: Map<number, CopyrightReward>;
   private currentId: number;
 
   constructor() {
@@ -136,6 +181,11 @@ export class MemStorage implements IStorage {
     this.harassmentCases = new Map();
     this.blockchainRecords = new Map();
     this.threatAnalyses = new Map();
+    this.corporateThefts = new Map();
+    this.githubThefts = new Map();
+    this.offlineAccesses = new Map();
+    this.copyrightComplaints = new Map();
+    this.copyrightRewards = new Map();
     this.currentId = 1;
     this.seedData();
   }
@@ -911,6 +961,135 @@ export class MemStorage implements IStorage {
       return updatedAnalysis;
     }
     return undefined;
+  }
+
+  // Corporate AI Theft Detection methods
+  async createCorporateTheft(insertTheft: InsertCorporateAiTheft): Promise<CorporateAiTheft> {
+    const id = this.currentId++;
+    const theft: CorporateAiTheft = {
+      id,
+      ...insertTheft,
+      legalStatus: "pending",
+      detectedAt: new Date(),
+    };
+    this.corporateThefts.set(id, theft);
+    return theft;
+  }
+
+  async getCorporateThefts(): Promise<CorporateAiTheft[]> {
+    return Array.from(this.corporateThefts.values());
+  }
+
+  async updateCorporateTheftStatus(id: number, status: string): Promise<CorporateAiTheft | undefined> {
+    const theft = this.corporateThefts.get(id);
+    if (theft) {
+      theft.legalStatus = status;
+      this.corporateThefts.set(id, theft);
+    }
+    return theft;
+  }
+
+  // GitHub Workflow Theft Protection methods
+  async createGithubTheft(insertTheft: InsertGithubWorkflowTheft): Promise<GithubWorkflowTheft> {
+    const id = this.currentId++;
+    const theft: GithubWorkflowTheft = {
+      id,
+      ...insertTheft,
+      dmcaStatus: "not-filed",
+      detectedAt: new Date(),
+    };
+    this.githubThefts.set(id, theft);
+    return theft;
+  }
+
+  async getGithubThefts(): Promise<GithubWorkflowTheft[]> {
+    return Array.from(this.githubThefts.values());
+  }
+
+  async updateDmcaStatus(id: number, status: string): Promise<GithubWorkflowTheft | undefined> {
+    const theft = this.githubThefts.get(id);
+    if (theft) {
+      theft.dmcaStatus = status;
+      this.githubThefts.set(id, theft);
+    }
+    return theft;
+  }
+
+  // Offline AI Access Monitoring methods
+  async createOfflineAccess(insertAccess: InsertOfflineAiAccess): Promise<OfflineAiAccess> {
+    const id = this.currentId++;
+    const access: OfflineAiAccess = {
+      id,
+      ...insertAccess,
+      detectedAt: new Date(),
+    };
+    this.offlineAccesses.set(id, access);
+    return access;
+  }
+
+  async getOfflineAccesses(): Promise<OfflineAiAccess[]> {
+    return Array.from(this.offlineAccesses.values());
+  }
+
+  async updateTrackingStatus(id: number, enabled: boolean): Promise<OfflineAiAccess | undefined> {
+    const access = this.offlineAccesses.get(id);
+    if (access) {
+      access.trackingEnabled = enabled;
+      this.offlineAccesses.set(id, access);
+    }
+    return access;
+  }
+
+  // Copyright Complaint System methods
+  async createCopyrightComplaint(insertComplaint: InsertCopyrightComplaint): Promise<CopyrightComplaint> {
+    const id = this.currentId++;
+    const complaint: CopyrightComplaint = {
+      id,
+      ...insertComplaint,
+      complaintStatus: "submitted",
+      submittedAt: new Date(),
+    };
+    this.copyrightComplaints.set(id, complaint);
+    return complaint;
+  }
+
+  async getCopyrightComplaints(): Promise<CopyrightComplaint[]> {
+    return Array.from(this.copyrightComplaints.values());
+  }
+
+  async updateComplaintStatus(id: number, status: string): Promise<CopyrightComplaint | undefined> {
+    const complaint = this.copyrightComplaints.get(id);
+    if (complaint) {
+      complaint.complaintStatus = status;
+      this.copyrightComplaints.set(id, complaint);
+    }
+    return complaint;
+  }
+
+  // Copyright Reward System methods
+  async createCopyrightReward(insertReward: InsertCopyrightReward): Promise<CopyrightReward> {
+    const id = this.currentId++;
+    const reward: CopyrightReward = {
+      id,
+      ...insertReward,
+      paymentStatus: "pending",
+      awardedAt: new Date(),
+    };
+    this.copyrightRewards.set(id, reward);
+    return reward;
+  }
+
+  async getCopyrightRewards(): Promise<CopyrightReward[]> {
+    return Array.from(this.copyrightRewards.values());
+  }
+
+  async updatePaymentStatus(id: number, status: string): Promise<CopyrightReward | undefined> {
+    const reward = this.copyrightRewards.get(id);
+    if (reward) {
+      reward.paymentStatus = status;
+      this.copyrightRewards.set(id, reward);
+    }
+    return reward;
   }
 }
 

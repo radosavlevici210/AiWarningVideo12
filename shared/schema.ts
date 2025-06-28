@@ -296,3 +296,140 @@ export type BlockchainAiIntegrity = typeof blockchainAiIntegrity.$inferSelect;
 export type InsertBlockchainIntegrity = z.infer<typeof insertBlockchainIntegritySchema>;
 export type AdvancedThreatAnalysis = typeof advancedThreatAnalysis.$inferSelect;
 export type InsertAdvancedThreat = z.infer<typeof insertAdvancedThreatSchema>;
+
+// Corporate AI Theft Detection
+export const corporateAiTheft = pgTable("corporate_ai_theft", {
+  id: serial("id").primaryKey(),
+  corporationName: text("corporation_name").notNull(),
+  theftType: text("theft_type").notNull(), // data-scraping, model-theft, workflow-copying, offline-access
+  stolenDataType: text("stolen_data_type").notNull(), // user-data, business-logic, proprietary-algorithms, github-workflows
+  originalOwner: text("original_owner").notNull(),
+  evidenceHash: text("evidence_hash").notNull(),
+  copyrightViolationType: text("copyright_violation_type").notNull(), // direct-copy, derivative-work, unauthorized-training
+  financialImpact: integer("financial_impact"), // estimated loss in USD
+  parallelTheftDetected: boolean("parallel_theft_detected").default(false),
+  sequentialTheftPattern: text("sequential_theft_pattern").array(),
+  offlineAccessMethods: text("offline_access_methods").array(),
+  transparencyScore: integer("transparency_score").notNull(), // 0-100, how transparent the theft is
+  detectionMethod: text("detection_method").notNull(),
+  legalStatus: text("legal_status").default("pending"), // pending, investigating, litigation, resolved
+  rewardEligible: boolean("reward_eligible").default(true),
+  detectedAt: timestamp("detected_at").defaultNow().notNull(),
+});
+
+// GitHub Workflow Theft Protection
+export const githubWorkflowTheft = pgTable("github_workflow_theft", {
+  id: serial("id").primaryKey(),
+  originalRepository: text("original_repository").notNull(),
+  originalOwner: text("original_owner").notNull(),
+  stolenByRepository: text("stolen_by_repository").notNull(),
+  theftType: text("theft_type").notNull(), // workflow-copy, action-theft, pipeline-duplication
+  workflowFingerprint: text("workflow_fingerprint").notNull(),
+  similarityScore: integer("similarity_score").notNull(), // 0-100 percentage
+  aiModificationDetected: boolean("ai_modification_detected").default(false),
+  corporateInvolvement: text("corporate_involvement"),
+  copyrightClaim: text("copyright_claim").notNull(),
+  dmcaStatus: text("dmca_status").default("not-filed"), // not-filed, filed, acknowledged, resolved
+  evidenceLinks: text("evidence_links").array(),
+  rewardAmount: integer("reward_amount"), // in USD cents
+  protectionLevel: text("protection_level").notNull(), // basic, standard, premium
+  detectedAt: timestamp("detected_at").defaultNow().notNull(),
+});
+
+// Offline AI Access Monitoring
+export const offlineAiAccess = pgTable("offline_ai_access", {
+  id: serial("id").primaryKey(),
+  accessType: text("access_type").notNull(), // local-model, cached-data, stolen-weights
+  detectedLocation: text("detected_location").notNull(),
+  aiModelIdentifier: text("ai_model_identifier").notNull(),
+  originalModelOwner: text("original_model_owner").notNull(),
+  accessMethod: text("access_method").notNull(), // direct-download, torrent, peer-to-peer
+  dataVolumeAccessed: text("data_volume_accessed"), // in GB/TB
+  corporateEntity: text("corporate_entity"),
+  unauthorizedUsage: text("unauthorized_usage").array(),
+  privacyViolations: text("privacy_violations").array(),
+  commercialUsage: boolean("commercial_usage").default(false),
+  encryptionBypassed: boolean("encryption_bypassed").default(false),
+  trackingEnabled: boolean("tracking_enabled").default(true),
+  riskLevel: text("risk_level").notNull(), // low, medium, high, critical
+  detectedAt: timestamp("detected_at").defaultNow().notNull(),
+});
+
+// Copyright Complaint System
+export const copyrightComplaints = pgTable("copyright_complaints", {
+  id: serial("id").primaryKey(),
+  complainantName: text("complainant_name").notNull(),
+  complainantEmail: text("complainant_email").notNull(),
+  copyrightOwnershipProof: text("copyright_ownership_proof").notNull(),
+  violationType: text("violation_type").notNull(), // ai-training-theft, content-generation, model-replication
+  violatingEntity: text("violating_entity").notNull(),
+  originalWorkDescription: text("original_work_description").notNull(),
+  violationEvidence: text("violation_evidence").array(),
+  dmcaNoticeIssued: boolean("dmca_notice_issued").default(false),
+  legalActionTaken: boolean("legal_action_taken").default(false),
+  requestedRemedies: text("requested_remedies").array(),
+  settlementAmount: integer("settlement_amount"), // in USD cents
+  complaintStatus: text("complaint_status").default("submitted"), // submitted, reviewing, investigating, resolved, rejected
+  priorityLevel: text("priority_level").notNull(), // low, medium, high, urgent
+  submittedAt: timestamp("submitted_at").defaultNow().notNull(),
+});
+
+// Copyright Reward System
+export const copyrightRewards = pgTable("copyright_rewards", {
+  id: serial("id").primaryKey(),
+  recipientName: text("recipient_name").notNull(),
+  recipientEmail: text("recipient_email").notNull(),
+  copyrightWorkTitle: text("copyright_work_title").notNull(),
+  rewardType: text("reward_type").notNull(), // detection-bonus, legal-victory, settlement-share
+  rewardAmount: integer("reward_amount").notNull(), // in USD cents
+  rewardReason: text("reward_reason").notNull(),
+  violationCaseId: integer("violation_case_id"),
+  paymentMethod: text("payment_method").notNull(), // bank-transfer, crypto, check
+  paymentStatus: text("payment_status").default("pending"), // pending, processing, paid, failed
+  taxDocumentation: text("tax_documentation"),
+  verificationRequired: boolean("verification_required").default(true),
+  eligibilityCriteria: text("eligibility_criteria").array(),
+  awardedAt: timestamp("awarded_at").defaultNow().notNull(),
+});
+
+// Insert schemas for new tables
+export const insertCorporateAiTheftSchema = createInsertSchema(corporateAiTheft).omit({
+  id: true,
+  legalStatus: true,
+  detectedAt: true,
+});
+
+export const insertGithubWorkflowTheftSchema = createInsertSchema(githubWorkflowTheft).omit({
+  id: true,
+  dmcaStatus: true,
+  detectedAt: true,
+});
+
+export const insertOfflineAiAccessSchema = createInsertSchema(offlineAiAccess).omit({
+  id: true,
+  detectedAt: true,
+});
+
+export const insertCopyrightComplaintSchema = createInsertSchema(copyrightComplaints).omit({
+  id: true,
+  complaintStatus: true,
+  submittedAt: true,
+});
+
+export const insertCopyrightRewardSchema = createInsertSchema(copyrightRewards).omit({
+  id: true,
+  paymentStatus: true,
+  awardedAt: true,
+});
+
+// Types for new tables
+export type CorporateAiTheft = typeof corporateAiTheft.$inferSelect;
+export type InsertCorporateAiTheft = z.infer<typeof insertCorporateAiTheftSchema>;
+export type GithubWorkflowTheft = typeof githubWorkflowTheft.$inferSelect;
+export type InsertGithubWorkflowTheft = z.infer<typeof insertGithubWorkflowTheftSchema>;
+export type OfflineAiAccess = typeof offlineAiAccess.$inferSelect;
+export type InsertOfflineAiAccess = z.infer<typeof insertOfflineAiAccessSchema>;
+export type CopyrightComplaint = typeof copyrightComplaints.$inferSelect;
+export type InsertCopyrightComplaint = z.infer<typeof insertCopyrightComplaintSchema>;
+export type CopyrightReward = typeof copyrightRewards.$inferSelect;
+export type InsertCopyrightReward = z.infer<typeof insertCopyrightRewardSchema>;
