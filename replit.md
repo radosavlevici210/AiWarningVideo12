@@ -2,7 +2,7 @@
 
 ## Overview
 
-AI Safety Shield is a comprehensive web application designed to educate users about AI-powered scams and provide tools for detection and reporting. The application combines educational content, interactive quizzes, video generation capabilities, and a reporting system to help users protect themselves from AI-generated deception.
+AI Safety Shield is a comprehensive web application designed to educate users about AI stalking awareness and provide tools for detection and reporting. The application combines educational content, interactive quizzes, video generation capabilities, and a reporting system to help users protect themselves from AI-generated deception. The platform is fully functional with all major features implemented and working.
 
 ## System Architecture
 

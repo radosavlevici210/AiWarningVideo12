@@ -121,7 +121,10 @@ export class MemStorage implements IStorage {
       ...insertReport,
       id,
       status: "pending",
-      createdAt: new Date()
+      createdAt: new Date(),
+      reporterEmail: insertReport.reporterEmail || null,
+      incidentDate: insertReport.incidentDate || null,
+      evidence: insertReport.evidence || null
     };
     this.reports.set(id, report);
     return report;
