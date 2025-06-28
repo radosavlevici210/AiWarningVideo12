@@ -103,6 +103,13 @@ The application uses five main database tables:
 ```
 Changelog:
 - June 28, 2025. Initial setup
+- June 28, 2025. Added advanced enterprise AI stalking detection features:
+  * Business threat detection for CEO impersonation and corporate espionage
+  * IP theft protection with rollback capabilities and cryptographic verification
+  * AI agent monitoring with truth score tracking and suspicious behavior detection
+  * Truth verification system with blockchain and digital signature validation
+  * Advanced API endpoints for enterprise security management
+  * Real-time monitoring dashboards with threat assessment and mitigation workflows
 ```
 
 ## User Preferences

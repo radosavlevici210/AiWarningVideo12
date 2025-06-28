@@ -4,6 +4,10 @@ import {
   quizResults, 
   educationalContent, 
   videoJobs,
+  businessThreats,
+  intellectualPropertyThefts,
+  aiAgentMonitoring,
+  truthVerification,
   type Report, 
   type InsertReport, 
   type QuizQuestion, 
@@ -11,7 +15,15 @@ import {
   type InsertQuizResult, 
   type EducationalContent, 
   type VideoJob, 
-  type InsertVideoJob 
+  type InsertVideoJob,
+  type BusinessThreat,
+  type InsertBusinessThreat,
+  type IntellectualPropertyTheft,
+  type InsertIpTheft,
+  type AiAgentMonitoring,
+  type InsertAiAgentMonitoring,
+  type TruthVerification,
+  type InsertTruthVerification
 } from "@shared/schema";
 
 export interface IStorage {
@@ -30,6 +42,26 @@ export interface IStorage {
   createVideoJob(job: InsertVideoJob): Promise<VideoJob>;
   getVideoJob(id: number): Promise<VideoJob | undefined>;
   updateVideoJob(id: number, updates: Partial<VideoJob>): Promise<VideoJob | undefined>;
+  
+  // Business Threats
+  createBusinessThreat(threat: InsertBusinessThreat): Promise<BusinessThreat>;
+  getBusinessThreats(): Promise<BusinessThreat[]>;
+  updateBusinessThreat(id: number, updates: Partial<BusinessThreat>): Promise<BusinessThreat | undefined>;
+  
+  // IP Theft Detection
+  createIpTheft(theft: InsertIpTheft): Promise<IntellectualPropertyTheft>;
+  getIpThefts(): Promise<IntellectualPropertyTheft[]>;
+  rollbackIpTheft(id: number): Promise<boolean>;
+  
+  // AI Agent Monitoring
+  createAiAgentMonitoring(monitoring: InsertAiAgentMonitoring): Promise<AiAgentMonitoring>;
+  getAiAgentMonitoring(): Promise<AiAgentMonitoring[]>;
+  updateAgentMonitoring(id: number, updates: Partial<AiAgentMonitoring>): Promise<AiAgentMonitoring | undefined>;
+  
+  // Truth Verification
+  createTruthVerification(verification: InsertTruthVerification): Promise<TruthVerification>;
+  getTruthVerifications(): Promise<TruthVerification[]>;
+  verifyContentIntegrity(contentId: number, currentHash: string): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -38,6 +70,10 @@ export class MemStorage implements IStorage {
   private quizResults: Map<number, QuizResult>;
   private educationalContent: Map<number, EducationalContent>;
   private videoJobs: Map<number, VideoJob>;
+  private businessThreats: Map<number, BusinessThreat>;
+  private ipThefts: Map<number, IntellectualPropertyTheft>;
+  private aiAgentMonitoring: Map<number, AiAgentMonitoring>;
+  private truthVerifications: Map<number, TruthVerification>;
   private currentId: number;
 
   constructor() {
@@ -46,6 +82,10 @@ export class MemStorage implements IStorage {
     this.quizResults = new Map();
     this.educationalContent = new Map();
     this.videoJobs = new Map();
+    this.businessThreats = new Map();
+    this.ipThefts = new Map();
+    this.aiAgentMonitoring = new Map();
+    this.truthVerifications = new Map();
     this.currentId = 1;
     this.seedData();
   }
@@ -112,6 +152,145 @@ export class MemStorage implements IStorage {
     quizData.forEach(question => {
       const id = this.currentId++;
       this.quizQuestions.set(id, { ...question, id });
+    });
+
+    // Seed business threats
+    const businessThreatData: Omit<BusinessThreat, 'id' | 'status' | 'createdAt'>[] = [
+      {
+        threatType: "ceo-impersonation",
+        companyName: "TechCorp Inc",
+        targetedExecutive: "CEO John Smith",
+        threatDescription: "Deepfake video call requesting emergency wire transfer of $500,000 to overseas account",
+        evidenceUrls: ["https://example.com/evidence1.mp4"],
+        impactLevel: "critical",
+        detectionMethod: "voice-analysis",
+        mitigationSteps: ["Verify through secondary channel", "Implement voice authentication", "Training for executives"],
+        reportedBy: "CFO Office"
+      },
+      {
+        threatType: "employee-impersonation",
+        companyName: "DataSafe Corp",
+        targetedExecutive: "HR Director",
+        threatDescription: "AI-generated voice clone impersonating employee requesting sensitive HR data",
+        evidenceUrls: ["https://example.com/evidence2.wav"],
+        impactLevel: "high",
+        detectionMethod: "behavioral-analysis",
+        mitigationSteps: ["Multi-factor verification", "Voice biometric verification", "Policy updates"],
+        reportedBy: "Security Team"
+      }
+    ];
+
+    businessThreatData.forEach(threat => {
+      const id = this.currentId++;
+      this.businessThreats.set(id, { 
+        ...threat, 
+        id, 
+        status: "active", 
+        createdAt: new Date() 
+      });
+    });
+
+    // Seed IP theft data
+    const ipTheftData: Omit<IntellectualPropertyTheft, 'id' | 'detectedAt'>[] = [
+      {
+        theftType: "code-theft",
+        originalOwner: "InnovateTech Solutions",
+        stolenContent: "Proprietary AI algorithm for fraud detection",
+        suspectedThief: "CompetitorCorp",
+        evidenceHash: "sha256:a1b2c3d4e5f6...",
+        copyrightStatus: "registered",
+        aiDetectionScore: 95,
+        rollbackCapability: true,
+        originalTimestamp: new Date("2024-01-15")
+      },
+      {
+        theftType: "model-theft",
+        originalOwner: "ML Research Lab",
+        stolenContent: "Neural network architecture for image recognition",
+        suspectedThief: "Unknown Entity",
+        evidenceHash: "sha256:f6e5d4c3b2a1...",
+        copyrightStatus: "pending",
+        aiDetectionScore: 87,
+        rollbackCapability: false,
+        originalTimestamp: new Date("2024-02-20")
+      }
+    ];
+
+    ipTheftData.forEach(theft => {
+      const id = this.currentId++;
+      this.ipThefts.set(id, { 
+        ...theft, 
+        id, 
+        detectedAt: new Date() 
+      });
+    });
+
+    // Seed AI agent monitoring
+    const agentMonitoringData: Omit<AiAgentMonitoring, 'id' | 'monitoringStatus' | 'detectedAt'>[] = [
+      {
+        agentType: "assistant",
+        agentIdentifier: "ChatBot-3000",
+        suspiciousActivity: "Unusual data extraction patterns and unauthorized API calls",
+        dataAccessPatterns: ["Accessing user personal data", "Querying financial records", "Downloading contact lists"],
+        truthScore: 45,
+        manipulationIndicators: ["Inconsistent responses", "Evasive behavior", "Data harvesting"],
+        userImpactLevel: "high",
+        preventionMeasures: ["Rate limiting", "Access restrictions", "Enhanced monitoring"]
+      },
+      {
+        agentType: "api",
+        agentIdentifier: "DataSync-API-v2",
+        suspiciousActivity: "Attempting to access restricted endpoints and bypass authentication",
+        dataAccessPatterns: ["Failed authentication attempts", "Endpoint enumeration", "Privilege escalation"],
+        truthScore: 23,
+        manipulationIndicators: ["Authentication bypass attempts", "Unusual request patterns"],
+        userImpactLevel: "medium",
+        preventionMeasures: ["IP blocking", "Enhanced authentication", "Request throttling"]
+      }
+    ];
+
+    agentMonitoringData.forEach(monitoring => {
+      const id = this.currentId++;
+      this.aiAgentMonitoring.set(id, { 
+        ...monitoring, 
+        id, 
+        monitoringStatus: "active", 
+        detectedAt: new Date() 
+      });
+    });
+
+    // Seed truth verification
+    const truthVerificationData: Omit<TruthVerification, 'id' | 'verificationTimestamp' | 'integrityStatus'>[] = [
+      {
+        contentType: "text",
+        originalContent: "Official company announcement about merger",
+        verificationMethod: "digital-signature",
+        truthScore: 98,
+        verifiedBy: "Corporate Communications",
+        manipulationDetected: false,
+        originalHash: "sha256:1a2b3c4d5e6f...",
+        currentHash: "sha256:1a2b3c4d5e6f..."
+      },
+      {
+        contentType: "video",
+        originalContent: "CEO quarterly earnings call recording",
+        verificationMethod: "blockchain",
+        truthScore: 89,
+        verifiedBy: "Digital Forensics Team",
+        manipulationDetected: true,
+        originalHash: "sha256:abcdef123456...",
+        currentHash: "sha256:fedcba654321..."
+      }
+    ];
+
+    truthVerificationData.forEach(verification => {
+      const id = this.currentId++;
+      this.truthVerifications.set(id, { 
+        ...verification, 
+        id, 
+        verificationTimestamp: new Date(),
+        integrityStatus: verification.manipulationDetected ? "modified" : "intact"
+      });
     });
   }
 
@@ -180,6 +359,134 @@ export class MemStorage implements IStorage {
       return updatedJob;
     }
     return undefined;
+  }
+
+  // Business Threats
+  async createBusinessThreat(insertThreat: InsertBusinessThreat): Promise<BusinessThreat> {
+    const id = this.currentId++;
+    const threat: BusinessThreat = {
+      ...insertThreat,
+      id,
+      status: "active",
+      createdAt: new Date(),
+      targetedExecutive: insertThreat.targetedExecutive || null,
+      evidenceUrls: insertThreat.evidenceUrls || null,
+      mitigationSteps: insertThreat.mitigationSteps || null,
+      reportedBy: insertThreat.reportedBy || null
+    };
+    this.businessThreats.set(id, threat);
+    return threat;
+  }
+
+  async getBusinessThreats(): Promise<BusinessThreat[]> {
+    return Array.from(this.businessThreats.values());
+  }
+
+  async updateBusinessThreat(id: number, updates: Partial<BusinessThreat>): Promise<BusinessThreat | undefined> {
+    const threat = this.businessThreats.get(id);
+    if (threat) {
+      const updatedThreat = { ...threat, ...updates };
+      this.businessThreats.set(id, updatedThreat);
+      return updatedThreat;
+    }
+    return undefined;
+  }
+
+  // IP Theft Detection
+  async createIpTheft(insertTheft: InsertIpTheft): Promise<IntellectualPropertyTheft> {
+    const id = this.currentId++;
+    const theft: IntellectualPropertyTheft = {
+      ...insertTheft,
+      id,
+      detectedAt: new Date(),
+      suspectedThief: insertTheft.suspectedThief || null,
+      evidenceHash: insertTheft.evidenceHash || null,
+      aiDetectionScore: insertTheft.aiDetectionScore || null,
+      rollbackCapability: insertTheft.rollbackCapability ?? false
+    };
+    this.ipThefts.set(id, theft);
+    return theft;
+  }
+
+  async getIpThefts(): Promise<IntellectualPropertyTheft[]> {
+    return Array.from(this.ipThefts.values());
+  }
+
+  async rollbackIpTheft(id: number): Promise<boolean> {
+    const theft = this.ipThefts.get(id);
+    if (theft && theft.rollbackCapability) {
+      // Simulate rollback process
+      const updatedTheft = { ...theft, rollbackCapability: false };
+      this.ipThefts.set(id, updatedTheft);
+      return true;
+    }
+    return false;
+  }
+
+  // AI Agent Monitoring
+  async createAiAgentMonitoring(insertMonitoring: InsertAiAgentMonitoring): Promise<AiAgentMonitoring> {
+    const id = this.currentId++;
+    const monitoring: AiAgentMonitoring = {
+      ...insertMonitoring,
+      id,
+      monitoringStatus: "active",
+      detectedAt: new Date(),
+      dataAccessPatterns: insertMonitoring.dataAccessPatterns || null,
+      truthScore: insertMonitoring.truthScore || null,
+      manipulationIndicators: insertMonitoring.manipulationIndicators || null,
+      preventionMeasures: insertMonitoring.preventionMeasures || null
+    };
+    this.aiAgentMonitoring.set(id, monitoring);
+    return monitoring;
+  }
+
+  async getAiAgentMonitoring(): Promise<AiAgentMonitoring[]> {
+    return Array.from(this.aiAgentMonitoring.values());
+  }
+
+  async updateAgentMonitoring(id: number, updates: Partial<AiAgentMonitoring>): Promise<AiAgentMonitoring | undefined> {
+    const monitoring = this.aiAgentMonitoring.get(id);
+    if (monitoring) {
+      const updatedMonitoring = { ...monitoring, ...updates };
+      this.aiAgentMonitoring.set(id, updatedMonitoring);
+      return updatedMonitoring;
+    }
+    return undefined;
+  }
+
+  // Truth Verification
+  async createTruthVerification(insertVerification: InsertTruthVerification): Promise<TruthVerification> {
+    const id = this.currentId++;
+    const verification: TruthVerification = {
+      ...insertVerification,
+      id,
+      verificationTimestamp: new Date(),
+      integrityStatus: insertVerification.manipulationDetected ? "modified" : "intact",
+      verifiedBy: insertVerification.verifiedBy || null,
+      manipulationDetected: insertVerification.manipulationDetected ?? false
+    };
+    this.truthVerifications.set(id, verification);
+    return verification;
+  }
+
+  async getTruthVerifications(): Promise<TruthVerification[]> {
+    return Array.from(this.truthVerifications.values());
+  }
+
+  async verifyContentIntegrity(contentId: number, currentHash: string): Promise<boolean> {
+    const verification = this.truthVerifications.get(contentId);
+    if (verification) {
+      const isIntact = verification.originalHash === currentHash;
+      const updatedVerification = {
+        ...verification,
+        currentHash,
+        manipulationDetected: !isIntact,
+        integrityStatus: isIntact ? "intact" : "modified"
+      };
+      this.truthVerifications.set(contentId, updatedVerification as TruthVerification);
+      return isIntact;
+    }
+    return false;
   }
 }
 

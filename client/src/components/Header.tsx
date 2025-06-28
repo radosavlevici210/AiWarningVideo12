@@ -19,6 +19,10 @@ export default function Header() {
     { id: "learn", label: "Learn" },
     { id: "quiz", label: "Detection Quiz" },
     { id: "video-tool", label: "Video Tool" },
+    { id: "business-threats", label: "Business Protection" },
+    { id: "ip-protection", label: "IP Security" },
+    { id: "ai-monitoring", label: "AI Monitoring" },
+    { id: "truth-verification", label: "Truth Verification" },
     { id: "resources", label: "Resources" },
   ];
 
